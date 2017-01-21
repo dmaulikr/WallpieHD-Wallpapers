@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Wallpie HD-Wallpapers</string>
+    <string name="action_settings">Settings</string>
+    <string name="collections">Collection</string>
+    <string name="popular">Popular</string>
+    <string name="latest">Latest</string>
+    <string name="favorite">Favorite</string>
+</resources>

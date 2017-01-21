@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00D1B2</color>
+    <color name="colorPrimaryDark">#00D1B2</color>
+    <color name="colorAccent">#00D1B2</color>
+    <color name="tabBackground">@android:color/white</color>
+    <color name="tabIndicator">@color/colorPrimary</color>
+    <color name="tabTextColor">@android:color/black</color>
+</resources>
