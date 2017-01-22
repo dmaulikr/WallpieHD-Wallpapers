@@ -5,4 +5,12 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_elevation">0dp</dimen>
     <dimen name="tabItemPadding">50dp</dimen>
+    <dimen name="photographer_name_padding_start">25dp</dimen>
+    <dimen name="circular_iv_dimens">56dp</dimen>
+    <dimen name="wallpaper_height">300dp</dimen>
+    <dimen name="bottom_like_share_padding">15dp</dimen>
+    <dimen name="photographer_iv_margint_top">25dp</dimen>
+    <dimen name="photographer_iv_margint_right">20dp</dimen>
+    <dimen name="wallapaper_share_sec_margin_top">5dp</dimen>
+    <dimen name="photographer_info_margin">10dp</dimen>
 </resources>
