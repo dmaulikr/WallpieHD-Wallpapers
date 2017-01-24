@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.fe.wallpie.application.Wallpie;
+import com.fe.wallpie.model.collections.CollectionResponse;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.fe.wallpie.model.photo.WallpaperResponse;
 import com.fe.wallpie.utility.AndroidUtils;
@@ -40,6 +41,7 @@ public class WallpaperProvider {
     private static final String UNSPLASH_API_KEY = "9a6788942f576c62329be1a2124c997cc9a409889400fd6f98ef2d62ccd69ed8";
     private static final String UNSPLASH_POPULAR = "popular";
     private static final String UNSPLASH_LATEST = "latest";
+    private static final String UNSPLASH_COLLECTION_FEATURED="featured";
     private static final String CACHE_CONTROL = "Cache-Control";
     OkHttpClient mOkHttpClient;
     Retrofit mRetrofit;
@@ -63,6 +65,12 @@ public class WallpaperProvider {
                 @Query("client_id") String clientId,
                 @Query("h") int height,
                 @Query("w") int width
+        );
+        @GET("collections/featured")
+        Observable<List<CollectionResponse>> getCollections(
+                @Query("page") String page,
+                @Query("client_id") String clientID,
+                @Query("per_page") String perPage
         );
 
     }
@@ -157,6 +165,12 @@ public class WallpaperProvider {
 
     public Observable<List<WallpapersResponse>> getLatestImages(int page) {
         Observable<List<WallpapersResponse>> observable = unsplashService.getImages(UNSPLASH_LATEST, String.valueOf(page), UNSPLASH_API_KEY, "20");
+        return observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+    public Observable<List<CollectionResponse>> getCollections(int page) {
+        Observable<List<CollectionResponse>> observable = unsplashService.getCollections(String.valueOf(page), UNSPLASH_API_KEY, "20");
         return observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

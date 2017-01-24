@@ -13,4 +13,5 @@
     <dimen name="photographer_iv_margint_right">20dp</dimen>
     <dimen name="wallapaper_share_sec_margin_top">5dp</dimen>
     <dimen name="photographer_info_margin">10dp</dimen>
+    <dimen name="collections_item">300dp</dimen>
 </resources>
