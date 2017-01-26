@@ -24,6 +24,9 @@ public class Urls {
         return mCustom;
     }
 
+    public Urls() {
+    }
+
     public void setCustom(String custom) {
         mCustom = custom;
     }

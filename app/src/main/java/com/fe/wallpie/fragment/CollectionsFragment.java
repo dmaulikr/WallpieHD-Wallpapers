@@ -15,6 +15,7 @@ import com.fe.wallpie.R;
 import com.fe.wallpie.adapters.CollectionAdapter;
 import com.fe.wallpie.api.WallpaperProvider;
 import com.fe.wallpie.model.collections.CollectionResponse;
+import com.fe.wallpie.utility.AndroidUtils;
 
 import java.util.List;
 

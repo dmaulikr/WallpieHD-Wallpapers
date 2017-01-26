@@ -33,6 +33,9 @@ public class User {
     @SerializedName("username")
     private String mUsername;
 
+    public User() {
+    }
+
     public String getBio() {
         return mBio;
     }

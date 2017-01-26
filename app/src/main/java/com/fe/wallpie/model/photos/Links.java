@@ -25,6 +25,9 @@ public class Links {
     @SerializedName("self")
     private String mSelf;
 
+    public Links() {
+    }
+
     public String getDownload() {
         return mDownload;
     }

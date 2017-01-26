@@ -33,6 +33,9 @@ public class WallpapersResponse {
     @SerializedName("width")
     private long mWidth;
 
+    public WallpapersResponse() {
+    }
+
     public List<Category> getCategories() {
         return mCategories;
     }

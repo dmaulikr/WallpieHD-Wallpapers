@@ -14,6 +14,9 @@ public class Category {
     @SerializedName("title")
     private String mTitle;
 
+    public Category() {
+    }
+
     public Long getId() {
         return mId;
     }

@@ -38,7 +38,8 @@ import timber.log.Timber;
  */
 
 public class WallpaperProvider {
-    private static final String UNSPLASH_API_KEY = "9a6788942f576c62329be1a2124c997cc9a409889400fd6f98ef2d62ccd69ed8";
+  //  private static final String UNSPLASH_API_KEY = "9a6788942f576c62329be1a2124c997cc9a409889400fd6f98ef2d62ccd69ed8";
+    private static final String UNSPLASH_API_KEY ="a3d491a681845489d835951746515bea9c0f50fe86d692e2c29325a2c68dd9c3";
     private static final String UNSPLASH_POPULAR = "popular";
     private static final String UNSPLASH_LATEST = "latest";
     private static final String UNSPLASH_COLLECTION_FEATURED="featured";

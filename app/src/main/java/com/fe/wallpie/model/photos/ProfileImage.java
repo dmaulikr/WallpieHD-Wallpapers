@@ -12,6 +12,9 @@ public class ProfileImage {
     @SerializedName("small")
     private String mSmall;
 
+    public ProfileImage() {
+    }
+
     public String getLarge() {
         return mLarge;
     }
