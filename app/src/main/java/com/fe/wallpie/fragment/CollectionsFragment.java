@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -60,7 +61,10 @@ public class CollectionsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mWallpaperProvider.getCollections(1).subscribe(collectionResponses -> populateCollection(collectionResponses));
+        mWallpaperProvider.getCollections(1).subscribe(collectionResponses -> populateCollection(collectionResponses),
+                throwable -> {
+                    Snackbar.make(view, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show();
+                });
     }
 
     private void populateCollection(List<CollectionResponse> collectionResponses) {

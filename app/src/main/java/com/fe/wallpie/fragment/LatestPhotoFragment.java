@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,12 +59,16 @@ public class LatestPhotoFragment extends Fragment {
         ButterKnife.bind(this, view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         mWallpaperProvider.getLatestImages(1).
-                subscribe(wallpapersResponses -> populatePhotos(wallpapersResponses, this.getActivity()));
+                subscribe(
+                        wallpapersResponses -> populatePhotos(wallpapersResponses),
+                        throwable -> {
+                            Snackbar.make(view, getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show();
+                        });
 
     }
 
-    private void populatePhotos(List<WallpapersResponse> wallpapersResponses, Context context) {
-        PhotosAdapter photosAdapter = new PhotosAdapter(wallpapersResponses, context);
+    private void populatePhotos(List<WallpapersResponse> wallpapersResponses) {
+        PhotosAdapter photosAdapter = new PhotosAdapter(wallpapersResponses, getActivity());
         mRecyclerView.setAdapter(photosAdapter);
     }
 
