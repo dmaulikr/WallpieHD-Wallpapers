@@ -12,5 +12,16 @@
     <string name="unknown_sign_in_response">Unknown signin response</string>
     <string name="logged_in">Logged in</string>
     <string name="login_to_fav">Login to add to favorite</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="shared_element_transition_wallpaper">wallpaper</string>
+    <string name="download">Download</string>
+    <string name="set_as_wallpaper">Set as Wallpaper</string>
+    <string name="liked_it">You liked it</string>
+    <string name="havent_liked_it">You haven\'t liked it</string>
+    <string name="test_id">395781A0455C88286AAF7FE65ABF13A1</string>
+    <string name="app_id">ca-app-pub-9506856060447311~8126143836</string>
+    <string name="native_small_m002_detail_activity">ca-app-pub-9506856060447311/2923888233</string>
 
+    <string name="test_add">ca-app-pub-3940256099942544/1072772517</string>
+    <string name="permission_required">Permission required for the action</string>
 </resources>

@@ -1,10 +1,13 @@
 
 package com.fe.wallpie.model.photos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 
-public class User {
+public class User implements Parcelable {
 
     @SerializedName("bio")
     private String mBio;
@@ -17,7 +20,7 @@ public class User {
     @SerializedName("links")
     private Links mLinks;
     @SerializedName("location")
-    private Object mLocation;
+    private String  mLocation;
     @SerializedName("name")
     private String mName;
     @SerializedName("portfolio_url")
@@ -80,7 +83,7 @@ public class User {
         return mLocation;
     }
 
-    public void setLocation(Object location) {
+    public void setLocation(String  location) {
         mLocation = location;
     }
 
@@ -140,4 +143,53 @@ public class User {
         mUsername = username;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mBio);
+        dest.writeString(this.mFirstName);
+        dest.writeString(this.mId);
+        dest.writeString(this.mLastName);
+        dest.writeParcelable(this.mLinks, flags);
+        dest.writeString(this.mLocation);
+        dest.writeString(this.mName);
+        dest.writeString(this.mPortfolioUrl);
+        dest.writeParcelable(this.mProfileImage, flags);
+        dest.writeValue(this.mTotalCollections);
+        dest.writeValue(this.mTotalLikes);
+        dest.writeValue(this.mTotalPhotos);
+        dest.writeString(this.mUsername);
+    }
+
+    protected User(Parcel in) {
+        this.mBio = in.readString();
+        this.mFirstName = in.readString();
+        this.mId = in.readString();
+        this.mLastName = in.readString();
+        this.mLinks = in.readParcelable(Links.class.getClassLoader());
+        this.mLocation = in.readString();
+        this.mName = in.readString();
+        this.mPortfolioUrl = in.readString();
+        this.mProfileImage = in.readParcelable(ProfileImage.class.getClassLoader());
+        this.mTotalCollections = (Long) in.readValue(Long.class.getClassLoader());
+        this.mTotalLikes = (Long) in.readValue(Long.class.getClassLoader());
+        this.mTotalPhotos = (Long) in.readValue(Long.class.getClassLoader());
+        this.mUsername = in.readString();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

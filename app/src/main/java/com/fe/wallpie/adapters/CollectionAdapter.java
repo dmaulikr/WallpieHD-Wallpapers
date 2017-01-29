@@ -26,10 +26,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.CollectionViewHolder> {
     List<CollectionResponse> mCollectionResponses;
     LayoutInflater mInflater;
+    OnItemClickListener mItemClickListener;
 
-    public CollectionAdapter(List<CollectionResponse> collectionResponses, Context context) {
+    public CollectionAdapter(List<CollectionResponse> collectionResponses, Context context,OnItemClickListener itemClickListener) {
         mCollectionResponses = collectionResponses;
         mInflater = LayoutInflater.from(context);
+        mItemClickListener = itemClickListener;
     }
 
     @Override
@@ -41,25 +43,17 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
     @Override
     public void onBindViewHolder(CollectionViewHolder holder, int position) {
         CollectionResponse collectionResponse = mCollectionResponses.get(position);
-        Glide.with(mInflater.getContext())
-                .load(collectionResponse.getCoverPhoto().getUrls().getRegular())
-                .placeholder(R.drawable.wallpaper_placeholder)
-                .thumbnail(0.1f)
-                .into(holder.mCollectionCoverImage);
-
-        Glide.with(mInflater.getContext())
-                .load(collectionResponse.getUser().getProfileImage().getMedium())
-                .placeholder(R.drawable.wallpaper_placeholder)
-                .thumbnail(0.1f)
-                .into(holder.mCollectionCreaterImageView);
-        holder.mCollectionCreaterName.setText(collectionResponse.getUser().getName());
-        holder.mCollectionName.setText(collectionResponse.getTitle());
+        holder.bindItems(collectionResponse,mItemClickListener);
 
     }
 
     @Override
     public int getItemCount() {
         return mCollectionResponses.size();
+    }
+
+    public void addItems(List<CollectionResponse> collectionResponses) {
+        mCollectionResponses.addAll(collectionResponses);
     }
 
     public class CollectionViewHolder extends RecyclerView.ViewHolder {
@@ -75,5 +69,31 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+
+        public void bindItems(CollectionResponse collectionResponse, OnItemClickListener itemClickListener) {
+            Glide.with(itemView.getContext())
+                    .load(collectionResponse.getCoverPhoto().getUrls().getRegular())
+                    .placeholder(R.drawable.wallpaper_placeholder)
+                    .thumbnail(0.1f)
+                    .into(mCollectionCoverImage);
+
+            Glide.with(itemView.getContext())
+                    .load(collectionResponse.getUser().getProfileImage().getMedium())
+                    .into(mCollectionCreaterImageView);
+            mCollectionCreaterName.setText(collectionResponse.getUser().getName());
+            mCollectionName.setText(collectionResponse.getTitle());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onItemClick(collectionResponse,CollectionViewHolder.this);
+                }
+            });
+
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(CollectionResponse collectionResponse, CollectionViewHolder collectionViewHolder);
+
     }
 }

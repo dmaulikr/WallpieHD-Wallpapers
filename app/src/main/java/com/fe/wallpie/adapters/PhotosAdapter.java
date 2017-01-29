@@ -1,7 +1,11 @@
 package com.fe.wallpie.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +18,9 @@ import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.fe.wallpie.R;
+import com.fe.wallpie.activity.DetailActivity;
 import com.fe.wallpie.application.Wallpie;
+import com.fe.wallpie.model.parcellable.WallpaperParcel;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.net.IDN;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,13 +45,16 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
 
     List<WallpapersResponse> mWallpapersResponses;
     LayoutInflater mLayoutInflater;
+    OnItemClickListener mItemClickListener;
 
-    public PhotosAdapter(List<WallpapersResponse> wallpapersResponses, Context context) {
+    public PhotosAdapter(List<WallpapersResponse> wallpapersResponses, Activity activity,OnItemClickListener onItemClickListener) {
         mWallpapersResponses = wallpapersResponses;
-        mLayoutInflater = LayoutInflater.from(context);
+        mLayoutInflater = LayoutInflater.from(activity);
+        mItemClickListener = onItemClickListener;
     }
 
     public void addItems(List<WallpapersResponse> wallpapersResponses) {
+        mWallpapersResponses.addAll(wallpapersResponses);
     }
 
     @Override
@@ -56,61 +66,15 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
     @Override
     public void onBindViewHolder(PhotosViewHolder holder, int position) {
         WallpapersResponse wallpapersResponse = mWallpapersResponses.get(position);
-        holder.mPhotographerName.setText(wallpapersResponse.getUser().getName());
-        holder.mPhotogtapherUserName.setText(wallpapersResponse.getUser().getUsername());
-        Glide.with(mLayoutInflater.getContext())
-                .load(wallpapersResponse.getUrls().getRegular())
-                .placeholder(R.drawable.wallpaper_placeholder)
-                .thumbnail(0.1f)
-                .into(holder.mWallpaper);
-        Log.d("Farmaan", "Completed" + position);
-
-        Glide.with(mLayoutInflater.getContext())
-                .load(wallpapersResponse.getUser().getProfileImage().getMedium())
-                .thumbnail(0.1f)
-                .into(holder.mProfilePic);
-
-        if (Wallpie.getFavRef() != null) {
-            Wallpie.getFavRef().addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.hasChild(wallpapersResponse.getId())) {
-                        holder.mWallapaperLike.setChecked(true);
-                    } else {
-                        holder.mWallapaperLike.setChecked(false);
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
+        try {
+            holder.onBind(wallpapersResponse, mItemClickListener);
+        } catch (Exception e) {
+            Log.d("PhotosAdapter", e.getMessage());
         }
-        holder.mWallapaperLike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (Wallpie.getFavRef() != null){
-                        Wallpie.getFavRef().child(wallpapersResponse.getId()).setValue(wallpapersResponse);
-                    }else {
-                        Snackbar.make(holder.itemView, mLayoutInflater.getContext().getString(R.string.login_to_fav), Snackbar.LENGTH_SHORT).show();
-                        holder.mWallapaperLike.setChecked(false);
-                    }
-
-                } else {
-                    if (Wallpie.getFavRef() != null) {
-                        Wallpie.getFavRef().child(wallpapersResponse.getId()).removeValue();
-                    }
-                }
-            }
-        });
-
-
-        holder.mWallapaperShare.setImageResource(R.drawable.ic_share_grey);
 
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -123,7 +87,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
         @BindView(R.id.photograpger_username)
         TextView mPhotogtapherUserName;
         @BindView(R.id.wallpaper)
-        ImageView mWallpaper;
+        public ImageView mWallpaper;
         @BindView(R.id.photographer_prof_pic)
         CircleImageView mProfilePic;
         @BindView(R.id.iv_like)
@@ -135,5 +99,96 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+
+
+        public void onBind(final WallpapersResponse wallpapersResponse,final OnItemClickListener onItemClickListener) {
+            mPhotographerName.setText(wallpapersResponse.getUser().getName());
+            mPhotogtapherUserName.setText(wallpapersResponse.getUser().getUsername());
+            Glide.with(itemView.getContext())
+                    .load(wallpapersResponse.getUrls().getRegular())
+                    .placeholder(R.drawable.wallpaper_placeholder)
+                    .thumbnail(0.1f)
+                    .into(mWallpaper);
+
+            Glide.with(itemView.getContext())
+                    .load(wallpapersResponse.getUser().getProfileImage().getMedium())
+                    .into(mProfilePic);
+
+
+
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                if (FirebaseDatabase.getInstance().getReference("favorite").
+                        child(FirebaseAuth.getInstance().getCurrentUser().getUid()) != null) {
+                    FirebaseDatabase.getInstance().getReference("favorite").
+                            child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
+                            addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.hasChild(wallpapersResponse.getId())) {
+                                        mWallapaperLike.setChecked(true);
+                                    } else {
+                                        mWallapaperLike.setChecked(false);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                }
+                mWallapaperLike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            if (FirebaseDatabase.getInstance().getReference("favorite").
+                                    child(FirebaseAuth.getInstance().getCurrentUser().getUid()) != null) {
+                                FirebaseDatabase.getInstance().getReference("favorite").
+                                        child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
+                                        child(wallpapersResponse.getId()).setValue(wallpapersResponse);
+                            } else {
+                                Snackbar.make(itemView, itemView.getContext().getString(R.string.login_to_fav), Snackbar.LENGTH_SHORT).show();
+                                mWallapaperLike.setChecked(false);
+                            }
+
+                        } else {
+                            if (FirebaseDatabase.getInstance().getReference("favorite").
+                                    child(FirebaseAuth.getInstance().getCurrentUser().getUid()) != null) {
+                                FirebaseDatabase.getInstance().getReference("favorite").
+                                        child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
+                                        child(wallpapersResponse.getId()).removeValue();
+                            }
+                        }
+                    }
+                });
+            } else {
+                mWallapaperLike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            mWallapaperLike.setChecked(false);
+                        }
+                        Snackbar.make(itemView,
+                                itemView.getContext().getString(R.string.login_to_fav),
+                                Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            mWallapaperShare.setImageResource(R.drawable.ic_share_grey);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(wallpapersResponse, PhotosViewHolder.this);
+                }
+            });
+
+        }
+    }
+
+    public interface  OnItemClickListener{
+        void onItemClick(WallpapersResponse wallpapersResponse,PhotosViewHolder photosViewHolder);
     }
 }

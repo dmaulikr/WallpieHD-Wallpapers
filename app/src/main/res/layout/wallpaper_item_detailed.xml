@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_marginTop="5dp"
     android:layout_height="wrap_content">
@@ -45,8 +46,10 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/wallpaper_height"
             android:layout_below="@id/photograpger_info"
+            android:transitionName="@string/shared_element_transition_wallpaper"
             android:adjustViewBounds="true"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            tools:targetApi="lollipop"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/photographer_prof_pic"
@@ -62,6 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/wallpaper"
+            android:padding="@dimen/dimen_wallpaper_footer_padding"
             android:layout_marginTop="@dimen/wallapaper_share_sec_margin_top">
 
             <ToggleButton

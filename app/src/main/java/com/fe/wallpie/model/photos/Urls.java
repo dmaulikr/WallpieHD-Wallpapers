@@ -1,10 +1,13 @@
 
 package com.fe.wallpie.model.photos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 
-public class Urls {
+public class Urls implements Parcelable {
 
     @SerializedName("full")
     private String mFull;
@@ -60,4 +63,37 @@ public class Urls {
         mThumb = thumb;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mFull);
+        dest.writeString(this.mRaw);
+        dest.writeString(this.mRegular);
+        dest.writeString(this.mSmall);
+        dest.writeString(this.mThumb);
+    }
+
+    protected Urls(Parcel in) {
+        this.mFull = in.readString();
+        this.mRaw = in.readString();
+        this.mRegular = in.readString();
+        this.mSmall = in.readString();
+        this.mThumb = in.readString();
+    }
+
+    public static final Parcelable.Creator<Urls> CREATOR = new Parcelable.Creator<Urls>() {
+        @Override
+        public Urls createFromParcel(Parcel source) {
+            return new Urls(source);
+        }
+
+        @Override
+        public Urls[] newArray(int size) {
+            return new Urls[size];
+        }
+    };
 }

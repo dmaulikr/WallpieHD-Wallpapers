@@ -7,12 +7,14 @@ import com.fe.wallpie.application.Wallpie;
 import com.fe.wallpie.model.collections.CollectionResponse;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.fe.wallpie.model.photo.WallpaperResponse;
+import com.fe.wallpie.model.user.RecommendationResponse;
 import com.fe.wallpie.utility.AndroidUtils;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -38,12 +40,13 @@ import timber.log.Timber;
  */
 
 public class WallpaperProvider {
-  //  private static final String UNSPLASH_API_KEY = "9a6788942f576c62329be1a2124c997cc9a409889400fd6f98ef2d62ccd69ed8";
-    private static final String UNSPLASH_API_KEY ="a3d491a681845489d835951746515bea9c0f50fe86d692e2c29325a2c68dd9c3";
+   private static final String UNSPLASH_API_KEY = "9a6788942f576c62329be1a2124c997cc9a409889400fd6f98ef2d62ccd69ed8";
+   // private static final String UNSPLASH_API_KEY ="a3d491a681845489d835951746515bea9c0f50fe86d692e2c29325a2c68dd9c3";
     private static final String UNSPLASH_POPULAR = "popular";
     private static final String UNSPLASH_LATEST = "latest";
     private static final String UNSPLASH_COLLECTION_FEATURED="featured";
     private static final String CACHE_CONTROL = "Cache-Control";
+    public static final String CUSTOM_PARAMS = String.format(Locale.ENGLISH,"?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=%d&h=%d&fit=max&s=e7b928aabf0a4d92c6254587def34fd3",(int)(Wallpie.getDesiredMinimumWidth()*1.5),(int )(Wallpie.getDesiredMinimumHeight()*1.5));
     OkHttpClient mOkHttpClient;
     Retrofit mRetrofit;
     UnsplashService unsplashService;
@@ -72,6 +75,14 @@ public class WallpaperProvider {
                 @Query("page") String page,
                 @Query("client_id") String clientID,
                 @Query("per_page") String perPage
+        );
+
+        @GET("users/{username}/photos")
+        Observable<List<RecommendationResponse>> getRecommedation(
+            @Path("username") String username,
+            @Query("per_page") String perPage,
+            @Query("client_id") String clientID,
+            @Query("order_by") String orderBY
         );
 
     }
@@ -103,7 +114,7 @@ public class WallpaperProvider {
 
                 // re-write response header to force use of cache
                 CacheControl cacheControl = new CacheControl.Builder()
-                        .maxAge(2, TimeUnit.MINUTES)
+                        .maxAge(60, TimeUnit.MINUTES)
                         .build();
 
                 return response.newBuilder()
@@ -147,15 +158,14 @@ public class WallpaperProvider {
         mWidth = width;
     }
 
-    public void getImage(String id) {
+    public Observable<WallpaperResponse> getImage(String id) {
         Observable<WallpaperResponse> observable = unsplashService.getImage(id, UNSPLASH_API_KEY, mHeight, mWidth);
-        observable.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(wallpaperResponse -> Log.d("Farmaan", wallpaperResponse.getUrls().getCustom()));
+        return observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<List<WallpapersResponse>> getPopularImages(int page) {
-        Observable<List<WallpapersResponse>> observable = unsplashService.getImages(UNSPLASH_POPULAR, String.valueOf(page), UNSPLASH_API_KEY, "20");
+    public Observable<List<WallpapersResponse>> getPopularImages(int page,int noOfItems) {
+        Observable<List<WallpapersResponse>> observable = unsplashService.getImages(UNSPLASH_POPULAR, String.valueOf(page), UNSPLASH_API_KEY,String.valueOf(noOfItems));
         return observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -164,16 +174,26 @@ public class WallpaperProvider {
     }
 
 
-    public Observable<List<WallpapersResponse>> getLatestImages(int page) {
-        Observable<List<WallpapersResponse>> observable = unsplashService.getImages(UNSPLASH_LATEST, String.valueOf(page), UNSPLASH_API_KEY, "20");
+    public Observable<List<WallpapersResponse>> getLatestImages(int page,int noOfItems) {
+        Observable<List<WallpapersResponse>> observable = unsplashService.getImages(UNSPLASH_LATEST, String.valueOf(page), UNSPLASH_API_KEY, String.valueOf(noOfItems));
         return observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
-    public Observable<List<CollectionResponse>> getCollections(int page) {
-        Observable<List<CollectionResponse>> observable = unsplashService.getCollections(String.valueOf(page), UNSPLASH_API_KEY, "20");
+    public Observable<List<CollectionResponse>> getCollections(int page,int noOfItems) {
+        Observable<List<CollectionResponse>> observable = unsplashService.getCollections(String.valueOf(page), UNSPLASH_API_KEY, String.valueOf(noOfItems));
         return observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    public Observable<List<RecommendationResponse>> getRecommendation(String  username,String perPage){
+        Observable<List<RecommendationResponse>> observable = unsplashService.getRecommedation(username, perPage, UNSPLASH_API_KEY,"oldest");
+        return observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
+
 }

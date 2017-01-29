@@ -1,9 +1,12 @@
 
 package com.fe.wallpie.model.photos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Category {
+public class Category implements Parcelable {
 
     @SerializedName("id")
     private Long mId;
@@ -49,4 +52,35 @@ public class Category {
         mTitle = title;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.mId);
+        dest.writeParcelable(this.mLinks, flags);
+        dest.writeValue(this.mPhotoCount);
+        dest.writeString(this.mTitle);
+    }
+
+    protected Category(Parcel in) {
+        this.mId = (Long) in.readValue(Long.class.getClassLoader());
+        this.mLinks = in.readParcelable(Links.class.getClassLoader());
+        this.mPhotoCount = (Long) in.readValue(Long.class.getClassLoader());
+        this.mTitle = in.readString();
+    }
+
+    public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
+        @Override
+        public Category createFromParcel(Parcel source) {
+            return new Category(source);
+        }
+
+        @Override
+        public Category[] newArray(int size) {
+            return new Category[size];
+        }
+    };
 }

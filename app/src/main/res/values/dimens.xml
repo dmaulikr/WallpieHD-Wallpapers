@@ -1,17 +1,25 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">25dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_elevation">0dp</dimen>
     <dimen name="tabItemPadding">50dp</dimen>
     <dimen name="photographer_name_padding_start">25dp</dimen>
     <dimen name="circular_iv_dimens">56dp</dimen>
-    <dimen name="wallpaper_height">300dp</dimen>
+    <dimen name="wallpaper_height">336dp</dimen>
     <dimen name="bottom_like_share_padding">15dp</dimen>
     <dimen name="photographer_iv_margint_top">25dp</dimen>
     <dimen name="photographer_iv_margint_right">20dp</dimen>
     <dimen name="wallapaper_share_sec_margin_top">5dp</dimen>
     <dimen name="photographer_info_margin">10dp</dimen>
     <dimen name="collections_item">300dp</dimen>
+    <dimen name="dimen_wallpaper_footer_padding">10dp</dimen>
+    <dimen name="app_bar_extented_height">240dp</dimen>
+    <dimen name="download_set_margin_left_right">5dp</dimen>
+    <dimen name="btn_height_download_set">35dp</dimen>
+    <dimen name="padding_left_photographr_details">10dp</dimen>
+    <dimen name="photographer_bottom_top_margin">5dp</dimen>
+    <dimen name="section_margin">5dp</dimen>
+    <dimen name="margin_top_rv_recommendation">10dp</dimen>
 </resources>

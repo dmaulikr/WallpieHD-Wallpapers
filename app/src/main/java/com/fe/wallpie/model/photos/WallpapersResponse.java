@@ -1,12 +1,16 @@
 
 package com.fe.wallpie.model.photos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
 
-public class WallpapersResponse {
+public class WallpapersResponse implements Parcelable {
 
     @SerializedName("categories")
     private List<Category> mCategories;
@@ -132,4 +136,53 @@ public class WallpapersResponse {
         mWidth = width;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(this.mCategories);
+        dest.writeString(this.mColor);
+        dest.writeString(this.mCreatedAt);
+        dest.writeList(this.mCurrentUserCollections);
+        dest.writeLong(this.mHeight);
+        dest.writeString(this.mId);
+        dest.writeValue(this.mLikedByUser);
+        dest.writeValue(this.mLikes);
+        dest.writeParcelable(this.mLinks, flags);
+        dest.writeParcelable(this.mUrls, flags);
+        dest.writeParcelable(this.mUser, flags);
+        dest.writeLong(this.mWidth);
+    }
+
+    protected WallpapersResponse(Parcel in) {
+        this.mCategories = new ArrayList<Category>();
+        in.readList(this.mCategories, Category.class.getClassLoader());
+        this.mColor = in.readString();
+        this.mCreatedAt = in.readString();
+        this.mCurrentUserCollections = new ArrayList<Object>();
+        in.readList(this.mCurrentUserCollections, Object.class.getClassLoader());
+        this.mHeight = in.readLong();
+        this.mId = in.readString();
+        this.mLikedByUser = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.mLikes = (Long) in.readValue(Long.class.getClassLoader());
+        this.mLinks = in.readParcelable(Links.class.getClassLoader());
+        this.mUrls = in.readParcelable(Urls.class.getClassLoader());
+        this.mUser = in.readParcelable(User.class.getClassLoader());
+        this.mWidth = in.readLong();
+    }
+
+    public static final Parcelable.Creator<WallpapersResponse> CREATOR = new Parcelable.Creator<WallpapersResponse>() {
+        @Override
+        public WallpapersResponse createFromParcel(Parcel source) {
+            return new WallpapersResponse(source);
+        }
+
+        @Override
+        public WallpapersResponse[] newArray(int size) {
+            return new WallpapersResponse[size];
+        }
+    };
 }
