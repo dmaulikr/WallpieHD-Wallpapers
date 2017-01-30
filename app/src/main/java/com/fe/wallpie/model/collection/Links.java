@@ -1,10 +1,13 @@
 
-package com.fe.wallpie.model.photo;
+package com.fe.wallpie.model.collection;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Links {
+
+public class Links implements Parcelable {
 
     @SerializedName("download")
     private String mDownload;
@@ -97,4 +100,48 @@ public class Links {
         mSelf = self;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mDownload);
+        dest.writeString(this.mDownloadLocation);
+        dest.writeString(this.mFollowers);
+        dest.writeString(this.mFollowing);
+        dest.writeString(this.mHtml);
+        dest.writeString(this.mLikes);
+        dest.writeString(this.mPhotos);
+        dest.writeString(this.mPortfolio);
+        dest.writeString(this.mSelf);
+    }
+
+    public Links() {
+    }
+
+    protected Links(Parcel in) {
+        this.mDownload = in.readString();
+        this.mDownloadLocation = in.readString();
+        this.mFollowers = in.readString();
+        this.mFollowing = in.readString();
+        this.mHtml = in.readString();
+        this.mLikes = in.readString();
+        this.mPhotos = in.readString();
+        this.mPortfolio = in.readString();
+        this.mSelf = in.readString();
+    }
+
+    public static final Parcelable.Creator<Links> CREATOR = new Parcelable.Creator<Links>() {
+        @Override
+        public Links createFromParcel(Parcel source) {
+            return new Links(source);
+        }
+
+        @Override
+        public Links[] newArray(int size) {
+            return new Links[size];
+        }
+    };
 }

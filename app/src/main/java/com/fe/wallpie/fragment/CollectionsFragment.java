@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.fe.wallpie.R;
+import com.fe.wallpie.activity.PhotosActivity;
 import com.fe.wallpie.adapters.CollectionAdapter;
 import com.fe.wallpie.api.WallpaperProvider;
 import com.fe.wallpie.listener.EndlessRecyclerViewScrollListener;
@@ -104,7 +105,7 @@ public class CollectionsFragment extends Fragment {
         mCollectionAdapter = new CollectionAdapter(collectionResponses, getActivity(), new CollectionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CollectionResponse collectionResponse, CollectionAdapter.CollectionViewHolder collectionViewHolder) {
-                Toast.makeText(getActivity(), "Its Working", Toast.LENGTH_SHORT).show();
+                startActivity(PhotosActivity.ceateIntent(getActivity(),collectionResponse.getId().toString()));
             }
         });
         mRecyclerView.setAdapter(mCollectionAdapter);

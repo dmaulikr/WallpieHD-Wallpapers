@@ -28,6 +28,7 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.fe.wallpie.BuildConfig;
 import com.fe.wallpie.R;
 import com.fe.wallpie.application.Wallpie;
+import com.fe.wallpie.model.collection.CollectionImages;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 
 import java.io.File;
@@ -67,6 +68,11 @@ public class SetUpActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        initializeBroadcastReceiver();
+
+    }
+
+    private void initializeBroadcastReceiver() {
         IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         mCompleteBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -108,7 +114,6 @@ public class SetUpActivity extends AppCompatActivity {
             }
         };
         registerReceiver(mCompleteBroadcastReceiver, intentFilter);
-
     }
 
 
@@ -117,6 +122,7 @@ public class SetUpActivity extends AppCompatActivity {
         intent.putExtra(PARCEL_EXTRA, wallpapersResponse);
         return intent;
     }
+
 
     @Override
     protected void onPause() {

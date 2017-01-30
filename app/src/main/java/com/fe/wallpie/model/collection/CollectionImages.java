@@ -1,25 +1,23 @@
 
-package com.fe.wallpie.model.photo;
+package com.fe.wallpie.model.collection;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
-
-
 import com.google.gson.annotations.SerializedName;
 
-public class WallpaperResponse {
+public class CollectionImages implements Parcelable {
 
     @SerializedName("categories")
-    private List<Category> mCategories;
+    private List<Object> mCategories;
     @SerializedName("color")
     private String mColor;
     @SerializedName("created_at")
     private String mCreatedAt;
     @SerializedName("current_user_collections")
     private List<Object> mCurrentUserCollections;
-    @SerializedName("downloads")
-    private Long mDownloads;
-    @SerializedName("exif")
-    private Exif mExif;
     @SerializedName("height")
     private Long mHeight;
     @SerializedName("id")
@@ -37,14 +35,11 @@ public class WallpaperResponse {
     @SerializedName("width")
     private Long mWidth;
 
-    public WallpaperResponse() {
-    }
-
-    public List<Category> getCategories() {
+    public List<Object> getCategories() {
         return mCategories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(List<Object> categories) {
         mCategories = categories;
     }
 
@@ -70,22 +65,6 @@ public class WallpaperResponse {
 
     public void setCurrentUserCollections(List<Object> current_user_collections) {
         mCurrentUserCollections = current_user_collections;
-    }
-
-    public Long getDownloads() {
-        return mDownloads;
-    }
-
-    public void setDownloads(Long downloads) {
-        mDownloads = downloads;
-    }
-
-    public Exif getExif() {
-        return mExif;
-    }
-
-    public void setExif(Exif exif) {
-        mExif = exif;
     }
 
     public Long getHeight() {
@@ -152,4 +131,56 @@ public class WallpaperResponse {
         mWidth = width;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(this.mCategories);
+        dest.writeString(this.mColor);
+        dest.writeString(this.mCreatedAt);
+        dest.writeList(this.mCurrentUserCollections);
+        dest.writeValue(this.mHeight);
+        dest.writeString(this.mId);
+        dest.writeValue(this.mLikedByUser);
+        dest.writeValue(this.mLikes);
+        dest.writeParcelable(this.mLinks, flags);
+        dest.writeParcelable(this.mUrls, flags);
+        dest.writeParcelable(this.mUser, flags);
+        dest.writeValue(this.mWidth);
+    }
+
+    public CollectionImages() {
+    }
+
+    protected CollectionImages(Parcel in) {
+        this.mCategories = new ArrayList<Object>();
+        in.readList(this.mCategories, Object.class.getClassLoader());
+        this.mColor = in.readString();
+        this.mCreatedAt = in.readString();
+        this.mCurrentUserCollections = new ArrayList<Object>();
+        in.readList(this.mCurrentUserCollections, Object.class.getClassLoader());
+        this.mHeight = (Long) in.readValue(Long.class.getClassLoader());
+        this.mId = in.readString();
+        this.mLikedByUser = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.mLikes = (Long) in.readValue(Long.class.getClassLoader());
+        this.mLinks = in.readParcelable(Links.class.getClassLoader());
+        this.mUrls = in.readParcelable(Urls.class.getClassLoader());
+        this.mUser = in.readParcelable(User.class.getClassLoader());
+        this.mWidth = (Long) in.readValue(Long.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<CollectionImages> CREATOR = new Parcelable.Creator<CollectionImages>() {
+        @Override
+        public CollectionImages createFromParcel(Parcel source) {
+            return new CollectionImages(source);
+        }
+
+        @Override
+        public CollectionImages[] newArray(int size) {
+            return new CollectionImages[size];
+        }
+    };
 }

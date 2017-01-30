@@ -1,12 +1,9 @@
 package com.fe.wallpie.api;
 
-import android.content.Context;
-import android.util.Log;
-
 import com.fe.wallpie.application.Wallpie;
+import com.fe.wallpie.model.collection.CollectionImages;
 import com.fe.wallpie.model.collections.CollectionResponse;
 import com.fe.wallpie.model.photos.WallpapersResponse;
-import com.fe.wallpie.model.photo.WallpaperResponse;
 import com.fe.wallpie.model.user.RecommendationResponse;
 import com.fe.wallpie.utility.AndroidUtils;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -15,13 +12,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.StringJoiner;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.schedulers.Timed;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
@@ -63,13 +59,7 @@ public class WallpaperProvider {
                 @Query("per_page") String perPage
         );
 
-        @GET("photos/{id}")
-        Observable<WallpaperResponse> getImage(
-                @Path("id") String photoId,
-                @Query("client_id") String clientId,
-                @Query("h") int height,
-                @Query("w") int width
-        );
+
         @GET("collections/featured")
         Observable<List<CollectionResponse>> getCollections(
                 @Query("page") String page,
@@ -83,6 +73,14 @@ public class WallpaperProvider {
             @Query("per_page") String perPage,
             @Query("client_id") String clientID,
             @Query("order_by") String orderBY
+        );
+
+        @GET("collections/{id}/photos")
+        Observable<List<CollectionImages>> getCollectionImages(
+                @Path("id") String collectionId,
+                @Query("page") String page,
+                @Query("per_page") String perPage,
+                @Query("client_id") String clientID
         );
 
     }
@@ -158,12 +156,6 @@ public class WallpaperProvider {
         mWidth = width;
     }
 
-    public Observable<WallpaperResponse> getImage(String id) {
-        Observable<WallpaperResponse> observable = unsplashService.getImage(id, UNSPLASH_API_KEY, mHeight, mWidth);
-        return observable.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
     public Observable<List<WallpapersResponse>> getPopularImages(int page,int noOfItems) {
         Observable<List<WallpapersResponse>> observable = unsplashService.getImages(UNSPLASH_POPULAR, String.valueOf(page), UNSPLASH_API_KEY,String.valueOf(noOfItems));
         return observable
@@ -194,6 +186,10 @@ public class WallpaperProvider {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-
+    public Observable<List<CollectionImages>> getCollectionImage(String id, int perPage, int page) {
+        Observable<List<CollectionImages>> observable = unsplashService.getCollectionImages(id,String .valueOf(page), String .valueOf(perPage), UNSPLASH_API_KEY);
+        return observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
 }

@@ -94,6 +94,5 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
 
     public interface OnItemClickListener {
         void onItemClick(CollectionResponse collectionResponse, CollectionViewHolder collectionViewHolder);
-
     }
 }

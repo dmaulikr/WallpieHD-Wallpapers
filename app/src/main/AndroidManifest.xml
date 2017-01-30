@@ -41,9 +41,10 @@
             android:label="@string/title_activity_detail"
             android:theme="@style/AppTheme.NoActionBar.LightStatusBar">
         </activity>
-        <activity android:name=".activity.SetUpActivity"
-                  android:theme="@style/AppTheme.NoActionBar.LightStatusBar"
-            android:exported="true">
+        <activity
+            android:name=".activity.SetUpActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar.LightStatusBar">
         </activity>
 
         <provider
@@ -55,6 +56,12 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
         </provider>
+
+        <activity
+            android:name=".activity.PhotosActivity"
+            android:label="@string/title_activity_photos"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
