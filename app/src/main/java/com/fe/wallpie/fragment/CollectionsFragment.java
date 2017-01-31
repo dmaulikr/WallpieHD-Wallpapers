@@ -41,7 +41,7 @@ public class CollectionsFragment extends Fragment {
     RecyclerView mRecyclerView;
     WallpaperProvider mWallpaperProvider;
     CollectionAdapter mCollectionAdapter;
-    private static final int MAX_ITEMS_PER_REQUEST = 20;
+    private static final int MAX_ITEMS_PER_REQUEST = 30;
 
     Disposable mCollectionInitialSubscription;
     Disposable mCollectionFollowingSubscription;

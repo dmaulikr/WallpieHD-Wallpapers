@@ -25,4 +25,7 @@
     <string name="test_add">ca-app-pub-3940256099942544/1072772517</string>
     <string name="permission_required">Permission required for the action</string>
     <string name="title_activity_photos">PhotosActivity</string>
+    <string name="recomendation_transition">recommendation</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="photographer_bg" translatable="false">"https://source.unsplash.com/category/technology/800x600"</string>
 </resources>

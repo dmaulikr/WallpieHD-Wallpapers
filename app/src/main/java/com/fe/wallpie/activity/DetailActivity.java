@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -36,6 +37,10 @@ import com.fe.wallpie.R;
 import com.fe.wallpie.adapters.RecommendationAdapter;
 import com.fe.wallpie.api.WallpaperProvider;
 import com.fe.wallpie.application.Wallpie;
+import com.fe.wallpie.model.collection.CollectionImages;
+import com.fe.wallpie.model.photos.ProfileImage;
+import com.fe.wallpie.model.photos.Urls;
+import com.fe.wallpie.model.photos.User;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.fe.wallpie.model.user.RecommendationResponse;
 import com.fe.wallpie.utility.PermissionManager;
@@ -103,6 +108,7 @@ public class DetailActivity extends AppCompatActivity {
     DownloadManager mDownloadManager;
     WallpaperManager mWallpaperManager;
     private static final String mWallpaperParcel = "wallpaper_parcel";
+    private static final int MAX_RECOMMENDATION = 4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,18 +132,22 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Observable<List<RecommendationResponse>> recommendation = mWallpaperProvider.getRecommendation(mWallpapersResponse.getUser().getUsername(), "4");
+        Observable<List<RecommendationResponse>> recommendation = mWallpaperProvider.getRecommendation(mWallpapersResponse.getUser().getUsername(), MAX_RECOMMENDATION, 1);
         mDisposable = recommendation.subscribe(
                 recommendationResponses -> {
-                    mRecommendationAdapter = new RecommendationAdapter(recommendationResponses, DetailActivity.this, mOnItemClickListener);
-                    mRecommendation.setAdapter(mRecommendationAdapter);
-                    mRecommendationAdapter.notifyDataSetChanged();
+                    populateRecommendation(recommendationResponses);
 
                 },
                 throwable -> {
                     Log.d(DetailActivity.this.getClass().getName(), throwable.getMessage());
                 });
 
+    }
+
+    private void populateRecommendation(List<RecommendationResponse> recommendationResponses) {
+        mRecommendationAdapter = new RecommendationAdapter(recommendationResponses, DetailActivity.this, mOnItemClickListener);
+        mRecommendation.setAdapter(mRecommendationAdapter);
+        mRecommendationAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -171,7 +181,8 @@ public class DetailActivity extends AppCompatActivity {
         mOnItemClickListener = new RecommendationAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecommendationResponse recommendationResponse, RecommendationAdapter.RecommendationViewHolder recomedationViewHolder) {
-                Toast.makeText(DetailActivity.this, "Working item click", Toast.LENGTH_SHORT).show();
+                Intent intent = DetailActivity.createIntent(DetailActivity.this, recommendationToWallpaperResponse(recommendationResponse));
+                startActivity(intent);
             }
         };
         Glide.with(this)
@@ -204,6 +215,12 @@ public class DetailActivity extends AppCompatActivity {
         mButtonDownload.setOnClickListener(v -> downloadOnly());
         mButtonSetWallpaper.setOnClickListener(v ->{
             downloadWallpaper();
+        });
+        mMoreRecommendation.setOnClickListener(v ->{
+            Intent intent=PhotographerActivity.createIntent(this,
+                    mWallpapersResponse.getUser().getUsername(),
+                    mWallpapersResponse.getUser().getProfileImage().getMedium());
+            startActivity(intent);
         });
     }
     private void setLikeButton() {
@@ -359,6 +376,26 @@ public class DetailActivity extends AppCompatActivity {
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+
+    private WallpapersResponse recommendationToWallpaperResponse(RecommendationResponse recommendationResponse) {
+        WallpapersResponse wallpapersResponse = new WallpapersResponse();
+        Urls urls = new Urls();
+        User user = new User();
+        user.setUsername(recommendationResponse.getUser().getUsername());
+        user.setName(recommendationResponse.getUser().getName());
+        user.setUsername(recommendationResponse.getUser().getUsername());
+        user.setFirstName(recommendationResponse.getUser().getFirstName());
+        user.setBio(recommendationResponse.getUser().getBio());
+        urls.setRegular(recommendationResponse.getUrls().getRegular());
+        ProfileImage profileImage = new ProfileImage();
+        profileImage.setMedium(recommendationResponse.getUser().getProfileImage().getMedium());
+        user.setProfileImage(profileImage);
+        wallpapersResponse.setUrls(urls);
+        wallpapersResponse.setUser(user);
+        wallpapersResponse.setId(recommendationResponse.getId());
+        return wallpapersResponse;
     }
 
 }

@@ -55,7 +55,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
     }
     public class RecommendationViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.wallpaper_recomdation)
-        ImageView mWallpaperRecommendation;
+        public ImageView mWallpaperRecommendation;
         public RecommendationViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -67,6 +67,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
                     .placeholder(R.drawable.wallpaper_placeholder)
                     .thumbnail(0.1f)
                     .into(mWallpaperRecommendation);
+            itemView.setOnClickListener(v -> {onItemClickListener.onItemClick(recommendationResponse,RecommendationViewHolder.this);});
         }
     }
 

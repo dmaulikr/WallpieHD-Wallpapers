@@ -72,7 +72,8 @@ public class WallpaperProvider {
             @Path("username") String username,
             @Query("per_page") String perPage,
             @Query("client_id") String clientID,
-            @Query("order_by") String orderBY
+            @Query("order_by") String orderBY,
+            @Query("page") String page
         );
 
         @GET("collections/{id}/photos")
@@ -179,8 +180,8 @@ public class WallpaperProvider {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<List<RecommendationResponse>> getRecommendation(String  username,String perPage){
-        Observable<List<RecommendationResponse>> observable = unsplashService.getRecommedation(username, perPage, UNSPLASH_API_KEY,"oldest");
+    public Observable<List<RecommendationResponse>> getRecommendation(String  username,int perPage,int page){
+        Observable<List<RecommendationResponse>> observable = unsplashService.getRecommedation(username, String.valueOf(perPage), UNSPLASH_API_KEY,"oldest",String.valueOf(page));
         return observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
