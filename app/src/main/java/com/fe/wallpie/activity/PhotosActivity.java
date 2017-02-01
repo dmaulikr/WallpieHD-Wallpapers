@@ -3,11 +3,14 @@ package com.fe.wallpie.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.fe.wallpie.R;
 import com.fe.wallpie.adapters.CollectionImagesAdapter;
@@ -20,6 +23,7 @@ import com.fe.wallpie.model.photos.Urls;
 import com.fe.wallpie.model.photos.User;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,6 +46,8 @@ public class PhotosActivity extends AppCompatActivity {
     Disposable mDisposableCollectionImagesFollowing;
     String mCollectionId;
     int page;
+    @BindView(R.id.progress_bar_loading)
+    ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +75,8 @@ public class PhotosActivity extends AppCompatActivity {
     }
 
     private void populateImages(List<CollectionImages> collectionImages) {
+        mProgressBar.setVisibility(View.GONE);
+        mCollectionImagesRecylerView.setVisibility(View.VISIBLE);
         mCollectionImagesAdapter = new CollectionImagesAdapter(this, collectionImages, new CollectionImagesAdapter.OnItemClickListner() {
             @Override
             public void onItemClick(CollectionImages collectionImages, CollectionImagesAdapter.ColectionImagesViewholder colectionImagesViewholder) {
@@ -87,7 +95,7 @@ public class PhotosActivity extends AppCompatActivity {
 
                                 },
                                 throwable -> {
-                                    Log.d(PhotosActivity.class.getName(), "onLoadMore: " + throwable.getMessage());
+                                    handleError(throwable);
                                 });
             }
         });
@@ -129,4 +137,23 @@ public class PhotosActivity extends AppCompatActivity {
             mDisposableCollectionImagesFollowing.dispose();
         }
     }
+
+    public void handleError(Throwable throwable) {
+        if (throwable instanceof IOException) {
+            snackBarResult(getString(R.string.no_internet_connection));
+        }
+        else if (throwable instanceof IllegalStateException) {
+            snackBarResult(getString(R.string.conversion_error));
+        } else {
+
+            snackBarResult(String.valueOf(throwable.getLocalizedMessage()));
+        }
+    }
+
+    private void snackBarResult(String msg) {
+        mProgressBar.setVisibility(View.GONE);
+        Snackbar.make(mCollectionImagesRecylerView,msg,Snackbar.LENGTH_SHORT).show();
+    }
+
+
 }

@@ -43,6 +43,7 @@ import com.fe.wallpie.model.photos.Urls;
 import com.fe.wallpie.model.photos.User;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.fe.wallpie.model.user.RecommendationResponse;
+import com.fe.wallpie.utility.AndroidUtils;
 import com.fe.wallpie.utility.PermissionManager;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -212,9 +213,19 @@ public class DetailActivity extends AppCompatActivity {
                 mAdsLayout.setVisibility(View.GONE);
             }
         });
-        mButtonDownload.setOnClickListener(v -> downloadOnly());
+        mButtonDownload.setOnClickListener(v -> {
+            if (AndroidUtils.isNetworkAvailable()) {
+                downloadOnly();
+            } else {
+                showErrorSnackBar();
+            }
+        });
         mButtonSetWallpaper.setOnClickListener(v ->{
-            downloadWallpaper();
+            if (AndroidUtils.isNetworkAvailable()) {
+                downloadWallpaper();
+            } else {
+                showErrorSnackBar();
+            }
         });
         mMoreRecommendation.setOnClickListener(v ->{
             Intent intent=PhotographerActivity.createIntent(this,
@@ -313,9 +324,9 @@ public class DetailActivity extends AppCompatActivity {
         if (fullPathToFile.exists()) {
             Uri capturedImage = FileProvider.getUriForFile(DetailActivity.this,
                     BuildConfig.APPLICATION_ID + ".provider",
-                    file);
+                    fullPathToFile);
 
-
+            Log.d(DetailActivity.class.getName(), "setWallpaper: "+capturedImage.toString());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 Intent setWallpaper = mWallpaperManager.getCropAndSetWallpaperIntent(capturedImage);
                 startActivity(setWallpaper);
@@ -396,6 +407,10 @@ public class DetailActivity extends AppCompatActivity {
         wallpapersResponse.setUser(user);
         wallpapersResponse.setId(recommendationResponse.getId());
         return wallpapersResponse;
+    }
+
+    private void showErrorSnackBar() {
+        Snackbar.make(mCoordinatorLayout, R.string.no_internet_connection, Snackbar.LENGTH_SHORT).show();
     }
 
 }

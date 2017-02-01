@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.fe.wallpie.R;
@@ -22,6 +23,7 @@ import com.fe.wallpie.listener.EndlessRecyclerViewScrollListener;
 import com.fe.wallpie.model.collections.CollectionResponse;
 import com.fe.wallpie.utility.AndroidUtils;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,6 +41,8 @@ public class CollectionsFragment extends Fragment {
     private OnCollectionsFragmentInteractionListener mListener;
     @BindView(R.id.collection_recyclerview)
     RecyclerView mRecyclerView;
+    @BindView(R.id.progress_bar_loading)
+    ProgressBar mProgressBar;
     WallpaperProvider mWallpaperProvider;
     CollectionAdapter mCollectionAdapter;
     private static final int MAX_ITEMS_PER_REQUEST = 30;
@@ -81,7 +85,7 @@ public class CollectionsFragment extends Fragment {
         mCollectionInitialSubscription=mWallpaperProvider.getCollections(page,MAX_ITEMS_PER_REQUEST).
                 subscribe(collectionResponses -> populateCollection(collectionResponses),
                 throwable -> {
-                    Snackbar.make(getView(),throwable.getMessage(), Snackbar.LENGTH_SHORT).show();
+                    handleError(throwable);
                 });
 
         mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mRecyclerView.getLayoutManager()) {
@@ -95,13 +99,15 @@ public class CollectionsFragment extends Fragment {
                                     mCollectionAdapter.notifyItemRangeInserted((page-1)*MAX_ITEMS_PER_REQUEST,MAX_ITEMS_PER_REQUEST);
                                 },
                                 throwable -> {
-                                    Log.d(CollectionsFragment.class.getName(), throwable.getMessage());
+                                   handleError(throwable);
                                 });
             }
         });
     }
 
     private void populateCollection(List<CollectionResponse> collectionResponses) {
+        mProgressBar.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
         mCollectionAdapter = new CollectionAdapter(collectionResponses, getActivity(), new CollectionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CollectionResponse collectionResponse, CollectionAdapter.CollectionViewHolder collectionViewHolder) {
@@ -138,5 +144,21 @@ public class CollectionsFragment extends Fragment {
     public interface OnCollectionsFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    public void handleError(Throwable throwable) {
+        if (throwable instanceof IOException) {
+            snackBarResult(getString(R.string.no_internet_connection));
+        }
+        else if (throwable instanceof IllegalStateException) {
+            snackBarResult(getString(R.string.conversion_error));
+        } else {
+
+            snackBarResult(String.valueOf(throwable.getLocalizedMessage()));
+        }
+    }
+
+    private void snackBarResult(String msg) {
+        mProgressBar.setVisibility(View.GONE);
+        Snackbar.make(mRecyclerView,msg,Snackbar.LENGTH_SHORT).show();
     }
 }

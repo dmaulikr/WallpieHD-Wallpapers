@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -84,27 +85,33 @@ public class SetUpActivity extends AppCompatActivity {
                     DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                     Cursor cursor = downloadManager.query(query);
                     cursor.moveToFirst();
-                    Uri uri = Uri.parse(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)));
-                    File file = new File(uri.getPath());
-                    Log.d(SetUpActivity.class.getName(), "onReceive: " + file.toString());
+                    int status=cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                    if (status ==DownloadManager.STATUS_SUCCESSFUL) {
+                        Uri uri = Uri.parse(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)));
+                        File file = new File(uri.getPath());
+                        Log.d(SetUpActivity.class.getName(), "onReceive: " + file.toString());
 
-                    Uri capturedImage = null;
+                        Uri capturedImage = null;
 
-                    capturedImage = FileProvider.getUriForFile(SetUpActivity.this,
-                            BuildConfig.APPLICATION_ID + ".provider",
-                            file);
+                        capturedImage = FileProvider.getUriForFile(SetUpActivity.this,
+                                BuildConfig.APPLICATION_ID + ".provider",
+                                file);
 //
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        Intent setWallpaper = mWallpaperManager.getCropAndSetWallpaperIntent(capturedImage);
-                        startActivity(setWallpaper);
-                        finish();
-                    } else {
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), capturedImage);
-                            mWallpaperManager.setBitmap(bitmap);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            Intent setWallpaper = mWallpaperManager.getCropAndSetWallpaperIntent(capturedImage);
+                            startActivity(setWallpaper);
+                            finish();
+                        } else {
+                            try {
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), capturedImage);
+                                mWallpaperManager.setBitmap(bitmap);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
+
+                    } else {
+                       SetUpActivity.this.finish();
                     }
 
 
@@ -114,6 +121,11 @@ public class SetUpActivity extends AppCompatActivity {
             }
         };
         registerReceiver(mCompleteBroadcastReceiver, intentFilter);
+    }
+
+    private void showErrorSnackBar() {
+        Snackbar.make(mImageViewLoad, R.string.download_failed, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.go_back, v -> finish()).show();
     }
 
 

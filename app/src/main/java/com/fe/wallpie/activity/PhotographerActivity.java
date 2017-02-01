@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.fe.wallpie.R;
@@ -29,6 +30,7 @@ import com.fe.wallpie.model.photos.User;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.fe.wallpie.model.user.RecommendationResponse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +59,7 @@ public class PhotographerActivity extends AppCompatActivity {
     private static final int MAX_ITEMS_PER_REQUEST = 30;
     PhotosAdapter mPhotosAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,11 +84,12 @@ public class PhotographerActivity extends AppCompatActivity {
                 .subscribe(recommendationResponses -> {
                             populatePhotographerRecyclerView(recommendationResponses);
                         },
-                        throwable -> Log.d(PhotosActivity.class.getName(), "onStart: " + throwable.getMessage()));
+                        throwable -> handleError(throwable));
 
     }
 
     private void populatePhotographerRecyclerView(List<RecommendationResponse> recommendationResponses) {
+        mRecyclerViewPhotographer.setVisibility(View.VISIBLE);
         mPhotosAdapter = new PhotosAdapter(convertAllToWallpaperResponse(recommendationResponses), this,
                 (wallpapersResponse, photosViewHolder) -> {
                     Intent intent = DetailActivity.createIntent(PhotographerActivity.this, wallpapersResponse);
@@ -135,5 +139,22 @@ public class PhotographerActivity extends AppCompatActivity {
         }
         return wallpapersResponses;
     }
+
+    public void handleError(Throwable throwable) {
+        if (throwable instanceof IOException) {
+            snackBarResult(getString(R.string.no_internet_connection));
+        }
+        else if (throwable instanceof IllegalStateException) {
+            snackBarResult(getString(R.string.conversion_error));
+        } else {
+
+            snackBarResult(String.valueOf(throwable.getLocalizedMessage()));
+        }
+    }
+
+    private void snackBarResult(String msg) {
+        Snackbar.make(mRecyclerViewPhotographer,msg,Snackbar.LENGTH_SHORT).show();
+    }
+
 
 }

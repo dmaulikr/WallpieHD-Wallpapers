@@ -28,4 +28,8 @@
     <string name="recomendation_transition">recommendation</string>
     <string name="title_activity_user">UserActivity</string>
     <string name="photographer_bg" translatable="false">"https://source.unsplash.com/category/technology/800x600"</string>
+    <string name="download_failed">Download Failed</string>
+    <string name="go_back">GO BACK</string>
+    <string name="timeout">Timeout</string>
+    <string name="conversion_error">ConversionError</string>
 </resources>

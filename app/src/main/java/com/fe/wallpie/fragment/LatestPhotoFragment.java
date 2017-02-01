@@ -28,7 +28,9 @@ import com.fe.wallpie.model.parcellable.WallpaperParcel;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.fe.wallpie.utility.AndroidUtils;
 import com.github.pwittchen.infinitescroll.library.InfiniteScrollListener;
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,7 +48,7 @@ public class LatestPhotoFragment extends Fragment {
     private OnLatestPhotoFragmentInteractionListener mListener;
     @BindView(R.id.photos_recyclerview)
     public RecyclerView mRecyclerView;
-    @BindView(R.id.progress_bar)
+    @BindView(R.id.progress_bar_loading)
     ProgressBar mProgressBar;
     WallpaperProvider mWallpaperProvider;
     Disposable mLatestImageInitialDisposable;
@@ -89,7 +91,7 @@ public class LatestPhotoFragment extends Fragment {
                 subscribe(
                         wallpapersResponses -> populatePhotos(wallpapersResponses),
                         throwable -> {
-                            Snackbar.make(getView(), getString(R.string.no_internet_connection), Snackbar.LENGTH_SHORT).show();
+                            handleError(throwable);
                         });
 
         mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mRecyclerView.getLayoutManager()) {
@@ -103,7 +105,7 @@ public class LatestPhotoFragment extends Fragment {
                                     photosAdapter.notifyItemRangeInserted((page-1)*MAX_ITEMS_PER_REQUEST,MAX_ITEMS_PER_REQUEST);
                                 },
                                 throwable -> {
-                                    Log.d(LatestPhotoFragment.class.getName(), throwable.getMessage());
+                                    handleError(throwable);
                                 });
             }
         });
@@ -111,6 +113,8 @@ public class LatestPhotoFragment extends Fragment {
 
 
     private void populatePhotos(List<WallpapersResponse> wallpapersResponses) {
+        mProgressBar.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
         photosAdapter = new PhotosAdapter(wallpapersResponses, getActivity(), new PhotosAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(WallpapersResponse wallpapersResponse, PhotosAdapter.PhotosViewHolder photosViewHolder) {
@@ -150,5 +154,22 @@ public class LatestPhotoFragment extends Fragment {
     public interface OnLatestPhotoFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void handleError(Throwable throwable) {
+        if (throwable instanceof IOException) {
+            snackBarResult("Timeout");
+        }
+        else if (throwable instanceof IllegalStateException) {
+            snackBarResult("ConversionError");
+        } else {
+
+            snackBarResult(String.valueOf(throwable.getLocalizedMessage()));
+        }
+    }
+
+    private void snackBarResult(String msg) {
+        mProgressBar.setVisibility(View.GONE);
+        Snackbar.make(mRecyclerView,msg,Snackbar.LENGTH_SHORT).show();
     }
 }
