@@ -1,5 +1,6 @@
 package com.fe.wallpie.adapters;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.fe.wallpie.R;
+import com.fe.wallpie.activity.PhotographerActivity;
 import com.fe.wallpie.application.Wallpie;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -84,6 +86,14 @@ public class FavoriteAdapter extends FirebaseRecyclerAdapter<WallpapersResponse,
         public void bind(WallpapersResponse wallpapersResponse, OnItemClickListener itemClickListener) {
 
             mPhotographerName.setText(wallpapersResponse.getUser().getName());
+            mPhotographerName.setOnClickListener(v -> {
+                Intent intent= PhotographerActivity.createIntent(itemView.getContext(),
+                        wallpapersResponse.getUser().getUsername(),
+                        wallpapersResponse.getUser().getProfileImage().getMedium(),
+                        wallpapersResponse.getUser().getName());
+                itemView.getContext().startActivity(intent);
+
+            });
             mPhotogtapherUserName.setText(wallpapersResponse.getUser().getUsername());
             Glide.with(Wallpie.getInstance())
                     .load(wallpapersResponse.getUrls().getRegular())

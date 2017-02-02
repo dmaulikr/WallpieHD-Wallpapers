@@ -19,6 +19,7 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.fe.wallpie.R;
 import com.fe.wallpie.activity.DetailActivity;
+import com.fe.wallpie.activity.PhotographerActivity;
 import com.fe.wallpie.application.Wallpie;
 import com.fe.wallpie.model.parcellable.WallpaperParcel;
 import com.fe.wallpie.model.photos.WallpapersResponse;
@@ -103,6 +104,14 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
 
         public void onBind(final WallpapersResponse wallpapersResponse,final OnItemClickListener onItemClickListener) {
             mPhotographerName.setText(wallpapersResponse.getUser().getName());
+            mPhotographerName.setOnClickListener(v -> {
+                Intent intent=PhotographerActivity.createIntent(itemView.getContext(),
+                        wallpapersResponse.getUser().getUsername(),
+                        wallpapersResponse.getUser().getProfileImage().getMedium(),
+                        wallpapersResponse.getUser().getName());
+                itemView.getContext().startActivity(intent);
+
+            });
             mPhotogtapherUserName.setText(wallpapersResponse.getUser().getUsername());
             Glide.with(itemView.getContext())
                     .load(wallpapersResponse.getUrls().getRegular())

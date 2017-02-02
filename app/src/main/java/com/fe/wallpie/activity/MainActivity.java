@@ -9,7 +9,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
@@ -54,8 +57,11 @@ public class MainActivity extends AppCompatActivity implements
     Toolbar mToolbar;
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
     FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mStateListener;
+    ActionBarDrawerToggle mActionBarDrawerToggle;
 
 
     @Override
@@ -104,6 +110,9 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setUpToolbar() {
         setSupportActionBar(mToolbar);
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_closed);
+        mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
+        mActionBarDrawerToggle.syncState();
     }
 
     private void setUpViewPager() {
@@ -115,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements
         viewPagerAdpater.addFragment(new FavoriteFragmanet(), getString(R.string.favorite));
         mViewPager.setAdapter(viewPagerAdpater);
         mTabLayout.setupWithViewPager(mViewPager);
+
     }
 
     @Override
@@ -143,4 +153,13 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+
+    }
 }

@@ -2,25 +2,21 @@ package com.fe.wallpie.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.fe.wallpie.R;
-import com.fe.wallpie.adapters.PhotosAdapter;
 import com.fe.wallpie.adapters.RecommendationAdapter;
 import com.fe.wallpie.api.WallpaperProvider;
 import com.fe.wallpie.application.Wallpie;
@@ -41,6 +37,7 @@ import io.reactivex.disposables.Disposable;
 
 public class PhotographerActivity extends AppCompatActivity {
 
+    private static final String PHOTOGRAPHER_NAME_EXTRA = "photographer_name";
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.photographer_bg)
@@ -57,22 +54,26 @@ public class PhotographerActivity extends AppCompatActivity {
     Disposable mPhotographerPictureInitial;
     Disposable mPhotographerPictureFollowing;
     private static final int MAX_ITEMS_PER_REQUEST = 30;
-    PhotosAdapter mPhotosAdapter;
+    RecommendationAdapter mPhotosAdapter;
+    String mPhotographerName;
+    @BindView(R.id.collapsingtoolbar_photographer_activty)
+    CollapsingToolbarLayout mCollapsingToolbarLayout;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photographer);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+
         ButterKnife.bind(this);
         setUpToolbar();
         mUserName = getIntent().getStringExtra(PHOTOGRAPHER_USERNAME_EXTRA);
         mProfilePicUrl = getIntent().getStringExtra(PHOTOGRAPHER_DP_EXTRA);
+        mPhotographerName=getIntent().getStringExtra(PHOTOGRAPHER_NAME_EXTRA);
+        mCollapsingToolbarLayout.setTitle(mPhotographerName);
         mWallpaperProvider = new WallpaperProvider(Wallpie.getDesiredMinimumHeight(), Wallpie.getDesiredMinimumWidth());
+
         Glide.with(this).load(mProfilePicUrl).into(mCircleImageView);
         Glide.with(this).load(getString(R.string.photographer_bg)).into(mImageView);
     }
@@ -90,20 +91,21 @@ public class PhotographerActivity extends AppCompatActivity {
 
     private void populatePhotographerRecyclerView(List<RecommendationResponse> recommendationResponses) {
         mRecyclerViewPhotographer.setVisibility(View.VISIBLE);
-        mPhotosAdapter = new PhotosAdapter(convertAllToWallpaperResponse(recommendationResponses), this,
-                (wallpapersResponse, photosViewHolder) -> {
-                    Intent intent = DetailActivity.createIntent(PhotographerActivity.this, wallpapersResponse);
+        mPhotosAdapter = new RecommendationAdapter(recommendationResponses, this,
+                (recommendationResponse, recomedationViewHolder) -> {
+                    Intent intent = DetailActivity.createIntent(PhotographerActivity.this, recommendationToWallpaperResponse(recommendationResponse));
                     startActivity(intent);
                 });
-        mRecyclerViewPhotographer.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerViewPhotographer.setLayoutManager(new GridLayoutManager(this,2));
         mRecyclerViewPhotographer.setAdapter(mPhotosAdapter);
 
     }
 
-    public static Intent createIntent(Context context, String username,String profilePicUrl) {
+    public static Intent createIntent(Context context, String username,String profilePicUrl,String name) {
         Intent intent = new Intent(context, PhotographerActivity.class);
         intent.putExtra(PHOTOGRAPHER_USERNAME_EXTRA, username);
         intent.putExtra(PHOTOGRAPHER_DP_EXTRA, profilePicUrl);
+        intent.putExtra(PHOTOGRAPHER_NAME_EXTRA, name);
         return intent;
     }
     private WallpapersResponse recommendationToWallpaperResponse(RecommendationResponse recommendationResponse) {
@@ -129,6 +131,7 @@ public class PhotographerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
     }
 
     private List<WallpapersResponse> convertAllToWallpaperResponse(List<RecommendationResponse> recommendationResponses) {
@@ -154,6 +157,17 @@ public class PhotographerActivity extends AppCompatActivity {
 
     private void snackBarResult(String msg) {
         Snackbar.make(mRecyclerViewPhotographer,msg,Snackbar.LENGTH_SHORT).show();
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

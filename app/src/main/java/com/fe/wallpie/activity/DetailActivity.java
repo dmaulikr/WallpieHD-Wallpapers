@@ -14,12 +14,14 @@ import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -193,7 +195,6 @@ public class DetailActivity extends AppCompatActivity {
                 .into(mWallpaperImage);
         Glide.with(this)
                 .load(mWallpapersResponse.getUser().getProfileImage().getMedium())
-                .thumbnail(0.1f)
                 .into(mProfPic);
         mPhotographerName.setText(mWallpapersResponse.getUser().getName());
         mPhotographerUserName.setText(mWallpapersResponse.getUser().getUsername());
@@ -230,7 +231,8 @@ public class DetailActivity extends AppCompatActivity {
         mMoreRecommendation.setOnClickListener(v ->{
             Intent intent=PhotographerActivity.createIntent(this,
                     mWallpapersResponse.getUser().getUsername(),
-                    mWallpapersResponse.getUser().getProfileImage().getMedium());
+                    mWallpapersResponse.getUser().getProfileImage().getMedium(),
+                    mWallpapersResponse.getUser().getName());
             startActivity(intent);
         });
     }
@@ -413,4 +415,15 @@ public class DetailActivity extends AppCompatActivity {
         Snackbar.make(mCoordinatorLayout, R.string.no_internet_connection, Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -42,7 +42,6 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
         View view = mInflater.inflate(R.layout.wallpaper_recomendation, parent, false);
         return new RecommendationViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(RecommendationViewHolder holder, int position) {
         RecommendationResponse recommendationResponse = mRecommendationResponses.get(position);

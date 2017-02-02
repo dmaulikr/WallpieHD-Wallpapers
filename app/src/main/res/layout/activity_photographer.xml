@@ -3,10 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/acttivity_coordinator_layout"
+    android:id="@+id/activity_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context="com.fe.wallpie.activity.PhotographerActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -15,11 +14,12 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingtoolbar_photographer_activty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-            app:titleEnabled="false">
+            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -27,6 +27,7 @@
 
                 <ImageView
                     android:id="@+id/photographer_bg"
+                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
@@ -39,8 +40,12 @@
                     android:id="@+id/photographer_dp"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/test1"/>
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="30dp"/>
+
             </RelativeLayout>
 
 
@@ -50,6 +55,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_marginTop="20dp"
                 app:layout_collapseMode="pin"
+                app:layout_collapseParallaxMultiplier="0.5"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
         </android.support.design.widget.CollapsingToolbarLayout>
 

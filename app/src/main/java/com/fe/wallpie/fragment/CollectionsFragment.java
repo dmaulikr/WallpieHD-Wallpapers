@@ -111,7 +111,7 @@ public class CollectionsFragment extends Fragment {
         mCollectionAdapter = new CollectionAdapter(collectionResponses, getActivity(), new CollectionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CollectionResponse collectionResponse, CollectionAdapter.CollectionViewHolder collectionViewHolder) {
-                startActivity(PhotosActivity.ceateIntent(getActivity(),collectionResponse.getId().toString()));
+                startActivity(PhotosActivity.ceateIntent(getActivity(),collectionResponse.getId().toString(),collectionResponse.getTitle()));
             }
         });
         mRecyclerView.setAdapter(mCollectionAdapter);

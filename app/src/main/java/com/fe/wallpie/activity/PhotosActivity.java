@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -35,6 +36,7 @@ public class PhotosActivity extends AppCompatActivity {
 
     private static final String COLLECTION_ID = "collection_id";
     private static final int MAX_ITEMS_PER_REQUEST = 30;
+    private static final String COLLECTION_NAME = "collection_name";
     CollectionImagesAdapter mCollectionImagesAdapter;
 
     @BindView(R.id.toolbar)
@@ -48,14 +50,16 @@ public class PhotosActivity extends AppCompatActivity {
     int page;
     @BindView(R.id.progress_bar_loading)
     ProgressBar mProgressBar;
+    private String mCOllectionName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photos);
         ButterKnife.bind(this);
-        setSupportActionBar(mToolbar);
         mCollectionId = getIntent().getStringExtra(COLLECTION_ID);
+        mCOllectionName = getIntent().getStringExtra(COLLECTION_NAME);
+        setUpToolbar();
         mWallpaperProvider = new WallpaperProvider(Wallpie.getDesiredMinimumHeight(), Wallpie.getDesiredMinimumWidth());
         page = 1;
     }
@@ -121,9 +125,10 @@ public class PhotosActivity extends AppCompatActivity {
         return wallpapersResponse;
     }
 
-    public static Intent ceateIntent(Context context, String id) {
+    public static Intent ceateIntent(Context context, String id,String name) {
         Intent intent = new Intent(context, PhotosActivity.class);
         intent.putExtra(COLLECTION_ID, id);
+        intent.putExtra(COLLECTION_NAME, name);
         return intent;
     }
 
@@ -153,6 +158,23 @@ public class PhotosActivity extends AppCompatActivity {
     private void snackBarResult(String msg) {
         mProgressBar.setVisibility(View.GONE);
         Snackbar.make(mCollectionImagesRecylerView,msg,Snackbar.LENGTH_SHORT).show();
+    }
+    private void setUpToolbar() {
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setTitle(mCOllectionName);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

@@ -32,4 +32,6 @@
     <string name="go_back">GO BACK</string>
     <string name="timeout">Timeout</string>
     <string name="conversion_error">ConversionError</string>
+    <string name="drawer_open">drawer_open</string>
+    <string name="drawer_closed">Drawer closed</string>
 </resources>
