@@ -22,4 +22,41 @@
     <dimen name="photographer_bottom_top_margin">5dp</dimen>
     <dimen name="section_margin">5dp</dimen>
     <dimen name="margin_top_rv_recommendation">10dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="dimens_switch_compat_padding">20dp</dimen>
+    <dimen name="app_name_text_size">25sp</dimen>
+    <dimen name="tab_min_width">100dp</dimen>
+    <dimen name="appbar_soze_photographer">300dp</dimen>
+    <dimen name="card_corner_radius">3dp</dimen>
+    <dimen name="colletion_card_margin">3dp</dimen>
+    <dimen name="collection_name_top_margin">100dp</dimen>
+    <dimen name="collection_text_size">25sp</dimen>
+    <dimen name="detail_item_elevation">8dp</dimen>
+    <dimen name="detail_button_width">0dp</dimen>
+    <dimen name="like_toggle_dimes">32dp</dimen>
+    <dimen name="like_toggle_margin_left">10dp</dimen>
+    <dimen name="details_photographer_section_padding">15dp</dimen>
+    <dimen name="dp_dimens">64dp</dimen>
+    <dimen name="bio_text_size">12sp</dimen>
+    <dimen name="recommendation_text_size">18sp</dimen>
+    <dimen name="login_instructions_dimens">20sp</dimen>
+    <dimen name="user_email_text_size">15sp</dimen>
+    <dimen name="margin_top_bottom_user_email">10dp</dimen>
+    <dimen name="margin_start_user_email">25dp</dimen>
+    <dimen name="user_name_text_size">15sp</dimen>
+    <dimen name="user_dp_dimens">64dp</dimen>
+    <dimen name="margin_user_dp">20dp</dimen>
+    <dimen name="margin_top_wallpaer_detail">5dp</dimen>
+    <dimen name="circle_image_border">2dp</dimen>
+    <dimen name="wallpaer_share_margin_start">15dp</dimen>
+    <dimen name="land_margin_start_end_wallpaper_detail">80dp</dimen>
+    <dimen name="like_dimens">32dp</dimen>
+    <dimen name="like_margin_start">10dp</dimen>
+    <dimen name="margin_top_widget">5dp</dimen>
+    <dimen name="fav_img_height">200dp</dimen>
 </resources>

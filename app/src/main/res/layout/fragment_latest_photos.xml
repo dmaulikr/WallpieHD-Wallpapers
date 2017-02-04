@@ -9,6 +9,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/photos_recyclerview"
         android:layout_width="match_parent"
+        android:contentDescription="@string/latest"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
 

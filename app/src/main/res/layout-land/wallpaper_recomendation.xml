@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    android:layout_height="280dp">
+    <ImageView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/wallpaper_recomdation"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:contentDescription="@string/recommended_image"
+        android:adjustViewBounds="true"
+        android:layout_height="match_parent"/>
+
+</android.support.v7.widget.CardView>

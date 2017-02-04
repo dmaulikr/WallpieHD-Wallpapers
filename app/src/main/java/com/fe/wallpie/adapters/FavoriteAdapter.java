@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.fe.wallpie.R;
 import com.fe.wallpie.activity.PhotographerActivity;
 import com.fe.wallpie.application.Wallpie;
+import com.fe.wallpie.model.collection.CollectionImages;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -151,6 +152,15 @@ public class FavoriteAdapter extends FirebaseRecyclerAdapter<WallpapersResponse,
                     itemClickListener.onItemClick(wallpapersResponse, FavoriteViewHolder.this);
                 }
             });
+            mWallapaperShare.setOnClickListener(v -> {shareImage(wallpapersResponse);});
+        }
+
+        private void shareImage(WallpapersResponse wallpapersResponse) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome wallpapper : "+wallpapersResponse.getLinks().getHtml());
+            sendIntent.setType("text/plain");
+            itemView.getContext().startActivity(sendIntent);
         }
     }
 

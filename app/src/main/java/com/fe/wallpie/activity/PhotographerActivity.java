@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fe.wallpie.R;
 import com.fe.wallpie.adapters.RecommendationAdapter;
 import com.fe.wallpie.api.WallpaperProvider;
@@ -35,11 +36,10 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.disposables.Disposable;
 
-public class PhotographerActivity extends AppCompatActivity {
+public class PhotographerActivity extends BaseActivity {
 
     private static final String PHOTOGRAPHER_NAME_EXTRA = "photographer_name";
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    private static final String BUNDLE_RECYLER_VIEW = "bundle_rv";
     @BindView(R.id.photographer_bg)
     ImageView mImageView;
     @BindView(R.id.photographer_dp)
@@ -59,23 +59,32 @@ public class PhotographerActivity extends AppCompatActivity {
     @BindView(R.id.collapsingtoolbar_photographer_activty)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photographer);
 
         ButterKnife.bind(this);
+
         setUpToolbar();
+
         mUserName = getIntent().getStringExtra(PHOTOGRAPHER_USERNAME_EXTRA);
         mProfilePicUrl = getIntent().getStringExtra(PHOTOGRAPHER_DP_EXTRA);
         mPhotographerName=getIntent().getStringExtra(PHOTOGRAPHER_NAME_EXTRA);
-        mCollapsingToolbarLayout.setTitle(mPhotographerName);
+
         mWallpaperProvider = new WallpaperProvider(Wallpie.getDesiredMinimumHeight(), Wallpie.getDesiredMinimumWidth());
+        mRecyclerViewPhotographer.setLayoutManager(new GridLayoutManager(this,2));
 
         Glide.with(this).load(mProfilePicUrl).into(mCircleImageView);
-        Glide.with(this).load(getString(R.string.photographer_bg)).into(mImageView);
+        Glide.with(this)
+                .load(getString(R.string.photographer_bg))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(mImageView);
+    }
+    private void setUpSeachView() {
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setOnSearchViewListener(this);
     }
 
     @Override
@@ -96,7 +105,7 @@ public class PhotographerActivity extends AppCompatActivity {
                     Intent intent = DetailActivity.createIntent(PhotographerActivity.this, recommendationToWallpaperResponse(recommendationResponse));
                     startActivity(intent);
                 });
-        mRecyclerViewPhotographer.setLayoutManager(new GridLayoutManager(this,2));
+
         mRecyclerViewPhotographer.setAdapter(mPhotosAdapter);
 
     }
@@ -107,6 +116,18 @@ public class PhotographerActivity extends AppCompatActivity {
         intent.putExtra(PHOTOGRAPHER_DP_EXTRA, profilePicUrl);
         intent.putExtra(PHOTOGRAPHER_NAME_EXTRA, name);
         return intent;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mRecyclerViewPhotographer.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(BUNDLE_RECYLER_VIEW));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_RECYLER_VIEW, mRecyclerViewPhotographer.getLayoutManager().onSaveInstanceState());
     }
     private WallpapersResponse recommendationToWallpaperResponse(RecommendationResponse recommendationResponse) {
         WallpapersResponse wallpapersResponse = new WallpapersResponse();
@@ -126,11 +147,12 @@ public class PhotographerActivity extends AppCompatActivity {
         wallpapersResponse.setId(recommendationResponse.getId());
         return wallpapersResponse;
     }
-    private void setUpToolbar() {
+    public void setUpToolbar() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setUpSeachView();
 
     }
 
@@ -157,17 +179,6 @@ public class PhotographerActivity extends AppCompatActivity {
 
     private void snackBarResult(String msg) {
         Snackbar.make(mRecyclerViewPhotographer,msg,Snackbar.LENGTH_SHORT).show();
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 

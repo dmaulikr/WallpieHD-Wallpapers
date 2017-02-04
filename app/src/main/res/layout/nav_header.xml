@@ -1,27 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:paddingTop="20dp"
-    android:paddingBottom="20dp"
-    android:background="@color/colorPrimaryDark"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="190dp">
+    android:layout_height="200dp">
 
     <ImageView
-        android:src="@drawable/test1"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:layout_height="0dp" />
+        android:id="@+id/poster_bg"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:background="@drawable/scrim_overlay_iv"
+        android:layout_height="match_parent"/>
+
     <TextView
         android:id="@+id/tv_email"
         android:textColor="@android:color/white"
-        android:text="Login"
-        android:textSize="18sp"
+        android:textSize="@dimen/user_email_text_size"
+        android:gravity="start"
+        android:contentDescription="@string/user_email"
+        android:layout_marginTop="@dimen/margin_top_bottom_user_email"
+        android:layout_marginBottom="@dimen/margin_top_bottom_user_email"
+        android:layout_marginStart="@dimen/margin_start_user_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/margin_start_user_email"/>
+    <TextView
+        android:id="@+id/tv_name"
+        android:textColor="@android:color/white"
+        android:text="@string/login"
+        android:textSize="@dimen/user_name_text_size"
         android:onClick="login"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:gravity="start"
+        android:contentDescription="@string/user_name"
+        android:layout_above="@id/tv_email"
+        android:layout_marginStart="@dimen/margin_start_user_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_start_user_email"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:src="@drawable/profile"
+        android:layout_width="@dimen/user_dp_dimens"
+        android:layout_height="@dimen/user_dp_dimens"
+        android:contentDescription="@string/user_image"
+        android:layout_margin="@dimen/margin_user_dp"
+        android:layout_above="@id/tv_name"
+        android:id="@+id/profile_dp"/>
+
+
+</RelativeLayout>

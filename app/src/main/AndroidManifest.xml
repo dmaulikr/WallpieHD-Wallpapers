@@ -9,6 +9,7 @@
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -16,6 +17,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission-sdk-23 android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:name=".application.Wallpie"
@@ -29,11 +32,8 @@
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".activity.DetailActivity"
@@ -64,10 +64,35 @@
         </activity>
         <activity
             android:name=".activity.PhotographerActivity"
-            android:label="@string/title_activity_user"
             android:exported="true"
+            android:label="@string/title_activity_user"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".activity.SearchActivity"
+            android:label="@string/title_activity_search"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".activity.SplashActivity"
+                  android:theme="@style/SplashTheme">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN"/>
+
+            <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".widget.FavWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/fav_widget_info"/>
+        </receiver>
+        <service android:name=".widget.FavWidgetService"
+                 android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

@@ -18,20 +18,49 @@
     <string name="set_as_wallpaper">Set as Wallpaper</string>
     <string name="liked_it">You liked it</string>
     <string name="havent_liked_it">You haven\'t liked it</string>
-    <string name="test_id">395781A0455C88286AAF7FE65ABF13A1</string>
-    <string name="app_id">ca-app-pub-9506856060447311~8126143836</string>
-    <string name="native_small_m002_detail_activity">ca-app-pub-9506856060447311/2923888233</string>
+    <string name="test_id" translatable="false">395781A0455C88286AAF7FE65ABF13A1</string>
+    <string name="app_id" translatable="false">ca-app-pub-9506856060447311~8126143836</string>
+    <string name="native_small_m002_detail_activity" translatable="false">ca-app-pub-9506856060447311/2923888233</string>
 
-    <string name="test_add">ca-app-pub-3940256099942544/1072772517</string>
+    <string name="test_add" translatable="false">ca-app-pub-3940256099942544/1072772517</string>
     <string name="permission_required">Permission required for the action</string>
     <string name="title_activity_photos">PhotosActivity</string>
     <string name="recomendation_transition">recommendation</string>
     <string name="title_activity_user">UserActivity</string>
-    <string name="photographer_bg" translatable="false">"https://source.unsplash.com/category/technology/800x600"</string>
+    <string name="photographer_bg" translatable="false">"https://source.unsplash.com/random/800x600"</string>
     <string name="download_failed">Download Failed</string>
     <string name="go_back">GO BACK</string>
     <string name="timeout">Timeout</string>
     <string name="conversion_error">ConversionError</string>
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_closed">Drawer closed</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="succesfull_set_wallpaper">Wallpaper successfully set</string>
+    <string name="unsuccessful_set_wallpaper">Download unsuccessful</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="empty_view_text">Login and add favorites</string>
+    <string name="login">Login</string>
+    <string name="daily_wallpaper">Daily Wallpaper</string>
+    <string name="wallpie">Wallpie</string>
+    <string name="wallpaper">Wallpaper</string>
+    <string name="photograpger_background_image">photograpger background image</string>
+    <string name="photographer_image">Photographer image</string>
+    <string name="search">Search</string>
+    <string name="login_using_google_to_add_favorites">Login using Google to add Favorites</string>
+    <string name="loading">loading</string>
+    <string name="like">like</string>
+    <string name="photographer_dp">Photographer Image</string>
+    <string name="photographer_bio">Photographer Bio</string>
+    <string name="ads">ads</string>
+    <string name="recomendation">Recomendation</string>
+    <string name="photographer_collections">Photographer Collections</string>
+    <string name="collecttion_images">Collecttion Images</string>
+    <string name="user_email">User email</string>
+    <string name="user_name">user name</string>
+    <string name="user_image">user image</string>
+    <string name="photographer_name">Photographer Name</string>
+    <string name="photographer_username">Photographer Username</string>
+    <string name="share">share</string>
+    <string name="recommended_image">recommended image</string>
 </resources>

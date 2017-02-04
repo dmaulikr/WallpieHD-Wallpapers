@@ -2,17 +2,13 @@ package com.fe.wallpie.application;
 
 import android.app.Application;
 import android.app.WallpaperManager;
-import android.util.Log;
 
 import com.fe.wallpie.R;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import timber.log.BuildConfig;
-import timber.log.Timber;
 
 /**
  * Created by Farmaan-PC on 21-01-2017.
@@ -23,6 +19,7 @@ public class Wallpie extends Application {
     private static DatabaseReference sDatabaseReference;
     private static WallpaperManager mWallpaperManager;
     private static long sDownloadRef;
+    private  FirebaseAnalytics mFirebaseAnalytics ;
 
     @Override
     public void onCreate() {
@@ -31,7 +28,7 @@ public class Wallpie extends Application {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);;
         mWallpaperManager = WallpaperManager.getInstance(this);
         MobileAds.initialize(this,getString(R.string.app_id));
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
 
     }
 

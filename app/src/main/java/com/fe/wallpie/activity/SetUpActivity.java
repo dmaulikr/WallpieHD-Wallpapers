@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -85,7 +86,12 @@ public class SetUpActivity extends AppCompatActivity {
                     DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                     Cursor cursor = downloadManager.query(query);
                     cursor.moveToFirst();
-                    int status=cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                    int status=100093;
+                    try {
+                        status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                    } catch (CursorIndexOutOfBoundsException e) {
+                        status = -1;
+                    }
                     if (status ==DownloadManager.STATUS_SUCCESSFUL) {
                         Uri uri = Uri.parse(cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)));
                         File file = new File(uri.getPath());
@@ -100,7 +106,6 @@ public class SetUpActivity extends AppCompatActivity {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                             Intent setWallpaper = mWallpaperManager.getCropAndSetWallpaperIntent(capturedImage);
                             startActivity(setWallpaper);
-                            finish();
                         } else {
                             try {
                                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), capturedImage);
@@ -109,10 +114,13 @@ public class SetUpActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
+                        SetUpActivity.this.setResult(RESULT_OK);
+
 
                     } else {
-                       SetUpActivity.this.finish();
+                       SetUpActivity.this.setResult(RESULT_CANCELED);
                     }
+                    finish();
 
 
                 }

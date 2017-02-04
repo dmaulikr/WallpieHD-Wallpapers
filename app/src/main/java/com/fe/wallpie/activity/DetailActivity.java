@@ -67,12 +67,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends BaseActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 100;
     private static final int MY_PERMISSIONS_REQUEST_READ_STORAGE = 101;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    private static final int SET_WALLPAPER = 110;
     @BindView(R.id.backdrop_iv)
     ImageView mWallpaperImage;
     @BindView(R.id.btn_download)
@@ -102,8 +101,6 @@ public class DetailActivity extends AppCompatActivity {
     Disposable mDisposable;
     WallpaperProvider mWallpaperProvider;
     WallpapersResponse mWallpapersResponse;
-    @BindView(R.id.detail_ac_coordinator_layout)
-    CoordinatorLayout mCoordinatorLayout;
     @BindView(R.id.native_ad)
     NativeExpressAdView mExpressAdView;
     @BindView(R.id.ads_layout)
@@ -137,13 +134,8 @@ public class DetailActivity extends AppCompatActivity {
         super.onStart();
         Observable<List<RecommendationResponse>> recommendation = mWallpaperProvider.getRecommendation(mWallpapersResponse.getUser().getUsername(), MAX_RECOMMENDATION, 1);
         mDisposable = recommendation.subscribe(
-                recommendationResponses -> {
-                    populateRecommendation(recommendationResponses);
-
-                },
-                throwable -> {
-                    Log.d(DetailActivity.this.getClass().getName(), throwable.getMessage());
-                });
+                this::populateRecommendation,
+                throwable -> Log.d(DetailActivity.this.getClass().getName(), throwable.getMessage()));
 
     }
 
@@ -159,7 +151,7 @@ public class DetailActivity extends AppCompatActivity {
         mDisposable.dispose();
     }
 
-    private void setUpToolbar() {
+    public void setUpToolbar() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -171,22 +163,21 @@ public class DetailActivity extends AppCompatActivity {
         intent.putExtra(mWallpaperParcel, parcelable);
         return intent;
     }
+    private void setUpSeachView() {
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setOnSearchViewListener(this);
+    }
 
     private void initializeUI() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+        setUpSeachView();
         mRecommendation.setLayoutManager(new GridLayoutManager(this, 2));
         mWallpaperProvider = new WallpaperProvider(Wallpie.getDesiredMinimumHeight(), Wallpie.getDesiredMinimumWidth());
         mWallpapersResponse = getIntent().getParcelableExtra(mWallpaperParcel);
-        mOnItemClickListener = new RecommendationAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecommendationResponse recommendationResponse, RecommendationAdapter.RecommendationViewHolder recomedationViewHolder) {
-                Intent intent = DetailActivity.createIntent(DetailActivity.this, recommendationToWallpaperResponse(recommendationResponse));
-                startActivity(intent);
-            }
+        mOnItemClickListener = (recommendationResponse, recomedationViewHolder) -> {
+            Intent intent = DetailActivity.createIntent(DetailActivity.this, recommendationToWallpaperResponse(recommendationResponse));
+            startActivity(intent);
+
         };
         Glide.with(this)
                 .load(mWallpapersResponse.getUrls().getRegular())
@@ -343,7 +334,7 @@ public class DetailActivity extends AppCompatActivity {
 
         } else {
             initializeWallPaperDownLoad();
-            startActivity(SetUpActivity.creatIntent(this, mWallpapersResponse));
+            startActivityForResult(SetUpActivity.creatIntent(this, mWallpapersResponse),SET_WALLPAPER);
         }
     }
 
@@ -391,6 +382,17 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SET_WALLPAPER) {
+            if (resultCode == RESULT_OK) {
+                showSnackbar(R.string.succesfull_set_wallpaper);
+            } else {
+                showSnackbar(R.string.unsuccessful_set_wallpaper);
+            }
+        }
+    }
 
     private WallpapersResponse recommendationToWallpaperResponse(RecommendationResponse recommendationResponse) {
         WallpapersResponse wallpapersResponse = new WallpapersResponse();
@@ -415,15 +417,5 @@ public class DetailActivity extends AppCompatActivity {
         Snackbar.make(mCoordinatorLayout, R.string.no_internet_connection, Snackbar.LENGTH_SHORT).show();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

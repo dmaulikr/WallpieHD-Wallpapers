@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/margin_top_wallpaer_detail"
+    android:layout_marginStart="@dimen/land_margin_start_end_wallpaper_detail"
+    android:layout_marginEnd="@dimen/land_margin_start_end_wallpaper_detail"
+    android:layout_marginRight="@dimen/land_margin_start_end_wallpaper_detail"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/land_margin_start_end_wallpaper_detail">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/photograpger_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/photographer_info_margin"
+            android:layout_marginTop="@dimen/photographer_info_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/photograpger_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/photographer_name_padding_start"
+                android:contentDescription="@string/photographer_name"
+                android:paddingStart="@dimen/photographer_name_padding_start"
+                android:textColor="@color/colorPrimaryDark"
+                tools:text="Farmaan"
+                />
+
+            <TextView
+                android:id="@+id/photograpger_username"
+                android:layout_width="wrap_content"
+                android:contentDescription="@string/photographer_username"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/photographer_name_padding_start"
+                android:paddingStart="@dimen/photographer_name_padding_start"
+                tools:text="India"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/wallpaper"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/wallpaper_height"
+            android:contentDescription="@string/wallpaper"
+            android:layout_below="@id/photograpger_info"
+            android:transitionName="@string/shared_element_transition_wallpaper"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            tools:targetApi="lollipop"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/photographer_prof_pic"
+            android:layout_width="@dimen/circular_iv_dimens"
+            android:layout_height="@dimen/circular_iv_dimens"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/photographer_iv_margint_right"
+            android:contentDescription="@string/photographer_image"
+            android:layout_marginTop="@dimen/photographer_iv_margint_top"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_width="@dimen/circle_image_border"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/wallpaper"
+            android:padding="@dimen/dimen_wallpaper_footer_padding"
+            android:layout_marginTop="@dimen/wallapaper_share_sec_margin_top">
+
+            <ToggleButton
+                android:id="@+id/iv_like"
+                android:layout_width="@dimen/like_dimens"
+                android:layout_height="@dimen/like_dimens"
+                android:layout_marginLeft="@dimen/like_margin_start"
+                android:layout_marginStart="@dimen/like_margin_start"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/like"
+                android:textOn=""
+                android:textOff=""
+                android:focusable="false"
+                android:background="@android:color/transparent"
+                android:button="@drawable/like_drawable_toggle"/>
+
+            <ImageView
+                android:id="@+id/iv_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/share"
+                android:adjustViewBounds="true"
+                android:layout_marginLeft="@dimen/wallpaer_share_margin_start"
+                android:src="@drawable/ic_share_grey"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

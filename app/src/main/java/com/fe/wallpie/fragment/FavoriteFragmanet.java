@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import butterknife.ButterKnife;
 
 public class FavoriteFragmanet extends Fragment {
 
+    private static final String BUNDLE_RV = "bundle_rv";
     @BindView(R.id.favorite_recycler_view)
     RecyclerView mFavRecyclerView;
     @BindView(R.id.login_instruction)
@@ -44,6 +46,10 @@ public class FavoriteFragmanet extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +58,15 @@ public class FavoriteFragmanet extends Fragment {
         return inflater.inflate(R.layout.fragment_favorite, container, false);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        try {
+            outState.putParcelable(BUNDLE_RV, mFavRecyclerView.getLayoutManager().onSaveInstanceState());
+        } catch (NullPointerException e) {
+            Log.d(FavoriteFragmanet.class.getName(), "onSaveInstanceState: "+e.getMessage());
+        }
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -81,10 +96,15 @@ public class FavoriteFragmanet extends Fragment {
                     });
             mFavRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             mFavRecyclerView.setAdapter(mFavoriteAdapter);
+            if (savedInstanceState != null) {
+                mFavRecyclerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(BUNDLE_RV));
+            }
         } else {
             mLoginInstruction.setVisibility(View.VISIBLE);
         }
+
     }
+
 
     @Override
     public void onAttach(Context context) {

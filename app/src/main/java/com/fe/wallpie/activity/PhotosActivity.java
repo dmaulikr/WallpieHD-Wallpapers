@@ -32,15 +32,15 @@ import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 
 
-public class PhotosActivity extends AppCompatActivity {
+public class PhotosActivity extends BaseActivity {
 
     private static final String COLLECTION_ID = "collection_id";
     private static final int MAX_ITEMS_PER_REQUEST = 30;
     private static final String COLLECTION_NAME = "collection_name";
+    private static final String BUNDLE_RECYLER_VIEW = "bundle_rv";
     CollectionImagesAdapter mCollectionImagesAdapter;
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+
     @BindView(R.id.collection_images)
     RecyclerView mCollectionImagesRecylerView;
     WallpaperProvider mWallpaperProvider;
@@ -60,7 +60,9 @@ public class PhotosActivity extends AppCompatActivity {
         mCollectionId = getIntent().getStringExtra(COLLECTION_ID);
         mCOllectionName = getIntent().getStringExtra(COLLECTION_NAME);
         setUpToolbar();
+        setUpSeachView();
         mWallpaperProvider = new WallpaperProvider(Wallpie.getDesiredMinimumHeight(), Wallpie.getDesiredMinimumWidth());
+        mCollectionImagesRecylerView.setLayoutManager(new LinearLayoutManager(this));
         page = 1;
     }
 
@@ -78,6 +80,24 @@ public class PhotosActivity extends AppCompatActivity {
 
     }
 
+    private void setUpSeachView() {
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setOnSearchViewListener(this);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mCollectionImagesRecylerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(BUNDLE_RECYLER_VIEW));
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_RECYLER_VIEW, mCollectionImagesRecylerView.getLayoutManager().onSaveInstanceState());
+    }
+
     private void populateImages(List<CollectionImages> collectionImages) {
         mProgressBar.setVisibility(View.GONE);
         mCollectionImagesRecylerView.setVisibility(View.VISIBLE);
@@ -87,7 +107,7 @@ public class PhotosActivity extends AppCompatActivity {
                 startActivity(DetailActivity.createIntent(PhotosActivity.this, collectionToWallpaperResponse(collectionImages)));
             }
         });
-        mCollectionImagesRecylerView.setLayoutManager(new LinearLayoutManager(this));
+
         mCollectionImagesRecylerView.setAdapter(mCollectionImagesAdapter);
         mCollectionImagesRecylerView.addOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mCollectionImagesRecylerView.getLayoutManager()) {
             @Override
@@ -159,8 +179,8 @@ public class PhotosActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.GONE);
         Snackbar.make(mCollectionImagesRecylerView,msg,Snackbar.LENGTH_SHORT).show();
     }
-    private void setUpToolbar() {
-        setSupportActionBar(mToolbar);
+    public void setUpToolbar() {
+        super.setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setTitle(mCOllectionName);

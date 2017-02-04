@@ -3,14 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_coordinator_layout"
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
+    android:background="@color/activityBackgroundColor"
     android:layout_height="match_parent"
+
     tools:context="com.fe.wallpie.activity.PhotographerActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="@dimen/appbar_soze_photographer"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -18,7 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="@color/colorPrimary"
-            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <RelativeLayout
@@ -28,35 +29,44 @@
                 <ImageView
                     android:id="@+id/photographer_bg"
                     android:scaleType="centerCrop"
+                    android:contentDescription="@string/photograpger_background_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/black_transparent"/>
+                    android:background="@drawable/scrim_overlay_iv"/>
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/photographer_dp"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="30dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="30dp"/>
+                    android:contentDescription="@string/photographer_image"
+                   android:layout_centerInParent="true"/>
 
             </RelativeLayout>
 
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginTop="20dp"
-                app:layout_collapseMode="pin"
-                app:layout_collapseParallaxMultiplier="0.5"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+           <FrameLayout
+               android:layout_width="match_parent"
+               android:layout_marginTop="20dp"
+               app:layout_collapseMode="parallax"
+               app:layout_collapseParallaxMultiplier="1"
+               android:layout_height="wrap_content">
+               <android.support.v7.widget.Toolbar
+                   android:id="@+id/toolbar"
+                   android:layout_width="match_parent"
+                   android:layout_height="?attr/actionBarSize"
+                   app:popupTheme="@style/AppTheme.PopupOverlay"/>
+               />
+               <com.miguelcatalan.materialsearchview.MaterialSearchView
+                   android:id="@+id/search_view"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:contentDescription="@string/search"
+                   android:visibility="visible" />
+           </FrameLayout>
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>

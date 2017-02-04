@@ -24,13 +24,33 @@
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+           <FrameLayout
+               android:layout_width="match_parent"
+               app:layout_scrollFlags="scroll|enterAlways"
+               android:layout_height="wrap_content">
+               <android.support.v7.widget.Toolbar
+                   android:id="@+id/toolbar"
+                   android:layout_width="match_parent"
+                   android:layout_height="?attr/actionBarSize"
+                   android:background="?attr/colorPrimary"
+                   app:popupTheme="@style/AppTheme.PopupOverlay">
+                   <TextView
+                       android:id="@+id/app_name_tv"
+                       android:text="@string/wallpie"
+                       android:contentDescription="@string/wallpie"
+                       android:layout_width="match_parent"
+                       android:gravity="center"
+                       android:textColor="@android:color/white"
+                       android:textSize="@dimen/app_name_text_size"
+                       android:layout_height="match_parent"/>
+               </android.support.v7.widget.Toolbar>
+               <com.miguelcatalan.materialsearchview.MaterialSearchView
+                   android:id="@+id/search_view"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:contentDescription="@string/search"
+                   android:visibility="visible" />
+           </FrameLayout>
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tab_layout"
@@ -38,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 app:tabMode="scrollable"
-                app:tabMinWidth="100dp"
+                app:tabMinWidth="@dimen/tab_min_width"
                 app:tabSelectedTextColor="@color/tabTextColorSelected"
                 app:tabTextColor="@color/tabTextColor">
 

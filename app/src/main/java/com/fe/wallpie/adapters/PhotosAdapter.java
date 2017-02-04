@@ -193,7 +193,16 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
                     onItemClickListener.onItemClick(wallpapersResponse, PhotosViewHolder.this);
                 }
             });
+            mWallapaperShare.setOnClickListener(v -> {shareImage(wallpapersResponse);});
 
+        }
+
+        private void shareImage(WallpapersResponse wallpapersResponse) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome wallpapper : "+wallpapersResponse.getLinks().getHtml());
+            sendIntent.setType("text/plain");
+            itemView.getContext().startActivity(sendIntent);
         }
     }
 

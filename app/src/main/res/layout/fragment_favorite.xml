@@ -9,15 +9,17 @@
         android:id="@+id/favorite_recycler_view"
         android:layout_width="match_parent"
         android:visibility="gone"
+        android:contentDescription="@string/favorite"
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
     <TextView
         android:id="@+id/login_instruction"
         android:layout_gravity="center"
-        android:text="Login using Google to add Favorites"
-        android:textSize="20dp"
+        android:text="@string/login_using_google_to_add_favorites"
+        android:textSize="@dimen/login_instructions_dimens"
         android:visibility="gone"
+        android:layout_centerInParent="true"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

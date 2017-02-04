@@ -2,218 +2,235 @@
 
 
 <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/content_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:ads="http://schemas.android.com/apk/res-auto">
-
-<LinearLayout
-    android:elevation="8dp"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:layout_width="match_parent"
-    android:background="@android:color/white"
-    android:paddingStart="@dimen/activity_horizontal_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:layout_height="wrap_content">
-
-    <Button
-        android:id="@+id/btn_download"
-        android:text="@string/download"
-        android:layout_weight="1"
-        android:layout_marginEnd="@dimen/download_set_margin_left_right"
-        android:layout_width="0dp"
-        android:textColor="@color/colorPrimary"
-        android:background="@drawable/btn_download_bg"
-        android:layout_height="@dimen/btn_height_download_set"
-
-        android:paddingRight="@dimen/download_set_margin_left_right"
-        android:layout_marginRight="@dimen/download_set_margin_left_right"/>
-    <Button
-        android:id="@+id/btn_set_wallpaper"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/btn_set_wallpaper_bg"
-        android:textColor="@android:color/white"
-        android:layout_marginStart="@dimen/download_set_margin_left_right"
-        android:text="@string/set_as_wallpaper"
-        android:layout_height="@dimen/btn_height_download_set"
-        android:layout_marginLeft="@dimen/download_set_margin_left_right"/>
-
-
-</LinearLayout>
-
-<LinearLayout
-    android:elevation="8dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingStart="@dimen/activity_horizontal_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="10dp"
-    android:background="@android:color/white">
-    <ToggleButton
-        android:id="@+id/iv_like"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:adjustViewBounds="true"
-        android:textOn=""
-        android:textOff=""
-        android:focusable="false"
-        android:background="@android:color/transparent"
-        android:button="@drawable/like_drawable_toggle"/>
-    <TextView
-        android:layout_width="match_parent"
-        tools:text="You liked it"
-        android:layout_height="wrap_content"
-        android:id="@+id/iv_like_info"/>
-
-
-</LinearLayout>
-<LinearLayout
-    android:elevation="8dp"
-    android:id="@+id/like_heart_layout"
-    android:layout_width="match_parent"
-    android:background="@android:color/white"
-    android:paddingStart="@dimen/activity_horizontal_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:layout_height="wrap_content">
-    <View
-        android:background="@color/grey"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-</LinearLayout>
-<RelativeLayout
-    android:paddingStart="@dimen/activity_horizontal_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:elevation="8dp"
-    android:layout_width="match_parent"
-    android:background="@android:color/white"
-    android:paddingTop="15dp"
-    android:paddingBottom="15dp"
-    android:layout_height="wrap_content">
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/prof_pic_iv"
-        android:layout_width="64dp"
-        android:layout_height="64dp"/>
     <LinearLayout
-        android:layout_toEndOf="@id/prof_pic_iv"
-        android:layout_width="wrap_content"
-        android:orientation="vertical"
-        android:baselineAligned="true"
-        android:paddingStart="@dimen/padding_left_photographr_details"
-
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/padding_left_photographr_details"
-        android:layout_toRightOf="@id/prof_pic_iv">
+        android:background="@android:color/white"
+        android:elevation="@dimen/detail_item_elevation"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <Button
+            android:id="@+id/btn_download"
+            android:layout_width="@dimen/detail_button_width"
+            android:layout_height="@dimen/btn_height_download_set"
+            android:layout_marginEnd="@dimen/download_set_margin_left_right"
+            android:layout_marginRight="@dimen/download_set_margin_left_right"
+            android:contentDescription="@string/download"
+            android:layout_weight="1"
+            android:background="@drawable/btn_download_bg"
+            android:paddingEnd="@dimen/download_set_margin_left_right"
+            android:paddingRight="@dimen/download_set_margin_left_right"
+
+            android:text="@string/download"
+            android:textColor="@color/colorPrimary"/>
+
+        <Button
+            android:id="@+id/btn_set_wallpaper"
+            android:layout_width="@dimen/detail_button_width"
+            android:layout_height="@dimen/btn_height_download_set"
+            android:layout_marginLeft="@dimen/download_set_margin_left_right"
+            android:layout_marginStart="@dimen/download_set_margin_left_right"
+            android:contentDescription="@string/set_as_wallpaper"
+            android:layout_weight="1"
+            android:background="@drawable/btn_set_wallpaper_bg"
+            android:text="@string/set_as_wallpaper"
+            android:textColor="@android:color/white"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="8dp"
+        android:paddingBottom="10dp"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin">
+
+        <ToggleButton
+            android:id="@+id/iv_like"
+            android:layout_width="@dimen/like_toggle_dimes"
+            android:layout_height="@dimen/like_toggle_dimes"
+            android:layout_marginLeft="@dimen/like_toggle_margin_left"
+            android:layout_marginStart="@dimen/like_toggle_margin_left"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/like"
+            android:background="@android:color/transparent"
+            android:button="@drawable/like_drawable_toggle"
+            android:focusable="false"
+            android:textOff=""
+            android:textOn=""/>
+
         <TextView
-            android:id="@+id/photograpger_name_tv"
-            tools:text="Farmaan"
-            android:textColor="@color/colorPrimary"
-            android:layout_width="wrap_content"
+            android:id="@+id/iv_like_info"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/photograpger_username"
-            tools:text="instagram"
-            android:layout_marginTop="5dp"
-            android:clickable="true"
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/like_heart_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="@dimen/detail_item_elevation"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="@dimen/detail_item_elevation"
+        android:paddingBottom="@dimen/details_photographer_section_padding"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/details_photographer_section_padding">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/prof_pic_iv"
+            android:layout_width="@dimen/dp_dimens"
+            android:contentDescription="@string/photographer_dp"
+            android:layout_height="@dimen/dp_dimens"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:layout_toEndOf="@id/prof_pic_iv"
+            android:layout_toRightOf="@id/prof_pic_iv"
+            android:baselineAligned="true"
+
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/padding_left_photographr_details"
+            android:paddingStart="@dimen/padding_left_photographr_details">
+
+            <TextView
+                android:id="@+id/photograpger_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                tools:text="Farmaan"/>
+
+            <TextView
+                android:id="@+id/photograpger_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:clickable="true"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/photograpger_bio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/prof_pic_iv"
+            android:layout_marginBottom="@dimen/photographer_bottom_top_margin"
+            android:layout_marginTop="@dimen/photographer_bottom_top_margin"
+            android:contentDescription="@string/photographer_bio"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/bio_text_size"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ads_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/section_margin"
+        android:background="@android:color/white"
+        android:elevation="@dimen/detail_item_elevation">
+
+        <com.google.android.gms.ads.NativeExpressAdView
+
+            android:id="@+id/native_ad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="360x132"
+            android:contentDescription="@string/ads"
+            ads:adUnitId="@string/test_add"
+            >
+        </com.google.android.gms.ads.NativeExpressAdView>
     </LinearLayout>
-    <TextView
-        android:layout_marginTop="@dimen/photographer_bottom_top_margin"
-        android:layout_marginBottom="@dimen/photographer_bottom_top_margin"
-        android:layout_below="@id/prof_pic_iv"
-        android:id="@+id/photograpger_bio"
-        android:textSize="12sp"
-        android:textColor="@android:color/black"
-        tools:text="I'm a designer and the founder of RetroSupply. RetroSupply offers a suite of high-quality photos, templates, brushes, actions, plug-ins and more. Get 9 best-selling RetroSupply goods free here: http://bit.ly/Free-RetroSupply-Goods "
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
-</RelativeLayout>
 
-<LinearLayout
-    android:id="@+id/ads_layout"
-    android:background="@android:color/white"
-    android:layout_width="match_parent"
-    android:layout_marginTop="@dimen/section_margin"
-    android:elevation="8dp"
-    android:layout_height="wrap_content">
-    <com.google.android.gms.ads.NativeExpressAdView
-
-        android:id="@+id/native_ad"
-        ads:adSize="360x132"
-        ads:adUnitId="@string/test_add"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
-    </com.google.android.gms.ads.NativeExpressAdView>
-</LinearLayout>
+        android:layout_marginTop="@dimen/section_margin"
+        android:background="@android:color/white"
+        android:elevation="@dimen/detail_item_elevation"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin">
 
+        <TextView
+            android:id="@+id/more_recommendation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:paddingTop="@dimen/section_margin"
+            android:text="More"
+            android:textAppearance="@style/TextAppearance.AppCompat.Menu"
+            tools:ignore="RtlCompat"/>
 
-<RelativeLayout
-    android:elevation="8dp"
-    android:layout_marginTop="@dimen/section_margin"
-    android:layout_width="match_parent"
-    android:paddingStart="@dimen/activity_horizontal_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:background="@android:color/white"
-    android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/more_from_photographer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingTop="@dimen/section_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+            android:textSize="@dimen/recommendation_text_size"
+            tools:ignore="RtlCompat"/>
 
-    <TextView
-        android:id="@+id/more_recommendation"
-        android:text="More"
-        android:layout_width="wrap_content"
-        android:paddingTop="@dimen/section_margin"
-        android:textAppearance="@style/TextAppearance.AppCompat.Menu"
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recommendation_rv"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="RtlCompat"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:background="@android:color/white"
+        android:elevation="8dp"
+        android:contentDescription="@string/recomendation"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/margin_top_rv_recommendation">
 
-    <TextView
-        android:id="@+id/more_from_photographer"
-        android:layout_width="wrap_content"
-        android:paddingTop="@dimen/section_margin"
-        android:textSize="18sp"
-        tools:text="More from Farmaan"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display3"
-        android:layout_height="wrap_content"
-        tools:ignore="RtlCompat"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-</RelativeLayout>
-<android.support.v7.widget.RecyclerView
-    android:elevation="8dp"
-    android:id="@+id/recommendation_rv"
-    android:background="@android:color/white"
-    android:paddingTop="@dimen/margin_top_rv_recommendation"
-    android:paddingStart="@dimen/activity_horizontal_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingEnd="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-</android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

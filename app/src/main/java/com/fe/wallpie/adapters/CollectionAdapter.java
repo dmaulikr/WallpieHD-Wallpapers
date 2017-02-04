@@ -59,12 +59,8 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
     public class CollectionViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.collection_cover_img)
         ImageView mCollectionCoverImage;
-        @BindView(R.id.collection_creater_img)
-        CircleImageView mCollectionCreaterImageView;
         @BindView(R.id.collection_name)
         TextView mCollectionName;
-        @BindView(R.id.collection_creater_name)
-        TextView mCollectionCreaterName;
         public CollectionViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -77,10 +73,8 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
                     .thumbnail(0.1f)
                     .into(mCollectionCoverImage);
 
-            Glide.with(itemView.getContext())
-                    .load(collectionResponse.getUser().getProfileImage().getMedium())
-                    .into(mCollectionCreaterImageView);
-            mCollectionCreaterName.setText(collectionResponse.getUser().getName());
+
+            mCollectionCoverImage.setContentDescription(collectionResponse.getTitle());
             mCollectionName.setText(collectionResponse.getTitle());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

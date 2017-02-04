@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_marginTop="5dp"
+    android:layout_marginTop="@dimen/margin_top_wallpaer_detail"
     android:layout_height="wrap_content">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,17 +28,19 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/photographer_name_padding_start"
                 android:paddingStart="@dimen/photographer_name_padding_start"
+                android:contentDescription="@string/photographer_name"
                 android:textColor="@color/colorPrimaryDark"
-                tools:text="Farmaan"
+
                 />
 
             <TextView
                 android:id="@+id/photograpger_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/photographer_username"
                 android:paddingLeft="@dimen/photographer_name_padding_start"
                 android:paddingStart="@dimen/photographer_name_padding_start"
-                tools:text="India"/>
+               />
         </LinearLayout>
 
         <ImageView
@@ -47,6 +49,7 @@
             android:layout_height="@dimen/wallpaper_height"
             android:layout_below="@id/photograpger_info"
             android:transitionName="@string/shared_element_transition_wallpaper"
+            android:contentDescription="@string/wallpaper"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
             tools:targetApi="lollipop"/>
@@ -55,11 +58,14 @@
             android:id="@+id/photographer_prof_pic"
             android:layout_width="@dimen/circular_iv_dimens"
             android:layout_height="@dimen/circular_iv_dimens"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginRight="@dimen/photographer_iv_margint_right"
+            android:layout_marginEnd="@dimen/photographer_iv_margint_right"
             android:layout_marginTop="@dimen/photographer_iv_margint_top"
+            android:contentDescription="@string/photographer_image"
             app:civ_border_color="@android:color/white"
-            app:civ_border_width="2dp"/>
+            app:civ_border_width="@dimen/circle_image_border"
+            android:layout_alignParentRight="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,13 +76,14 @@
 
             <ToggleButton
                 android:id="@+id/iv_like"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
+                android:layout_width="@dimen/like_dimens"
+                android:layout_height="@dimen/like_dimens"
+                android:layout_marginLeft="@dimen/like_margin_start"
+                android:layout_marginStart="@dimen/like_margin_start"
                 android:adjustViewBounds="true"
                 android:textOn=""
                 android:textOff=""
+                android:contentDescription="@string/like"
                 android:focusable="false"
                 android:background="@android:color/transparent"
                 android:button="@drawable/like_drawable_toggle"/>
@@ -86,7 +93,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:layout_marginLeft="15dp"
+                android:contentDescription="@string/share"
+                android:layout_marginLeft="@dimen/wallpaer_share_margin_start"
+                android:layout_marginStart="@dimen/wallpaer_share_margin_start"
                 android:src="@drawable/ic_share_grey"/>
         </LinearLayout>
 

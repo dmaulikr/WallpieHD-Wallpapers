@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "453380872544-vq47fqnl8upuhmogj2m0m7grvjqj9gje.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.fe.wallpie",
-            "certificate_hash": "3B2F6BA8C5BC04C09A794519FCEF1E3EA0996420"
-          }
-        },
-        {
           "client_id": "453380872544-bsm0r65usuceqllkjdpvdppp1a1nj7ua.apps.googleusercontent.com",
           "client_type": 3
         }

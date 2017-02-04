@@ -1,6 +1,7 @@
 package com.fe.wallpie.utility;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -16,5 +17,9 @@ public class AndroidUtils {
                 = (ConnectivityManager) Wallpie.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public static Typeface getPacificoTypeface(Context context) {
+        return Typeface.createFromAsset(context.getAssets(), "fonts/Pacifico.ttf");
     }
 }

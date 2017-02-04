@@ -4,6 +4,7 @@ import com.fe.wallpie.application.Wallpie;
 import com.fe.wallpie.model.collection.CollectionImages;
 import com.fe.wallpie.model.collections.CollectionResponse;
 import com.fe.wallpie.model.photos.WallpapersResponse;
+import com.fe.wallpie.model.search.SearchResponse;
 import com.fe.wallpie.model.user.RecommendationResponse;
 import com.fe.wallpie.utility.AndroidUtils;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -12,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.StringJoiner;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -29,7 +29,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import timber.log.Timber;
 
 /**
  * Created by Farmaan-PC on 21-01-2017.
@@ -84,6 +83,15 @@ public class WallpaperProvider {
                 @Query("client_id") String clientID
         );
 
+        @GET("search/photos")
+        Observable<SearchResponse> getSearchResult(
+                @Query("query")String query,
+                @Query("page") String page,
+                @Query("per_page") String perPage,
+                @Query("client_id") String clientID
+        );
+
+
     }
 
     private static OkHttpClient provideOkHttpClient() {
@@ -100,7 +108,6 @@ public class WallpaperProvider {
             cache = new Cache(new File(Wallpie.getInstance().getCacheDir(), "http-cache"),
                     10 * 1024 * 1024); // 10 MB
         } catch (Exception e) {
-            Timber.e(e, "Could not create Cache!");
         }
         return cache;
     }
@@ -191,6 +198,13 @@ public class WallpaperProvider {
         Observable<List<CollectionImages>> observable = unsplashService.getCollectionImages(id,String .valueOf(page), String .valueOf(perPage), UNSPLASH_API_KEY);
         return observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<SearchResponse> getSearchResult(String query, int perPage, int page) {
+        Observable<SearchResponse> listObservable = unsplashService.getSearchResult(query, String.valueOf(page),String.valueOf(perPage),UNSPLASH_API_KEY);
+        return listObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
     }
 
 }

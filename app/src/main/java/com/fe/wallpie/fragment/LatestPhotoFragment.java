@@ -4,19 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.fe.wallpie.R;
 import com.fe.wallpie.activity.DetailActivity;
@@ -24,11 +21,7 @@ import com.fe.wallpie.adapters.PhotosAdapter;
 import com.fe.wallpie.api.WallpaperProvider;
 import com.fe.wallpie.application.Wallpie;
 import com.fe.wallpie.listener.EndlessRecyclerViewScrollListener;
-import com.fe.wallpie.model.parcellable.WallpaperParcel;
 import com.fe.wallpie.model.photos.WallpapersResponse;
-import com.fe.wallpie.utility.AndroidUtils;
-import com.github.pwittchen.infinitescroll.library.InfiniteScrollListener;
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,6 +38,7 @@ import io.reactivex.disposables.Disposable;
  */
 public class LatestPhotoFragment extends Fragment {
 
+    private static final String BUNDLE_RV = "bundle_rv";
     private OnLatestPhotoFragmentInteractionListener mListener;
     @BindView(R.id.photos_recyclerview)
     public RecyclerView mRecyclerView;
@@ -54,7 +48,7 @@ public class LatestPhotoFragment extends Fragment {
     Disposable mLatestImageInitialDisposable;
     Disposable mLatestImageFollowingDisposable;
     private static final int MAX_ITEMS_PER_REQUEST = 30;
-    private int page;
+   private int page;
     PhotosAdapter photosAdapter;
 
     public LatestPhotoFragment() {
@@ -74,6 +68,8 @@ public class LatestPhotoFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_latest_photos, container, false);
     }
+
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
