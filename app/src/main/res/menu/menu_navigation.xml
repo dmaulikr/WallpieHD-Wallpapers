@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/logout"
-        apps:showAsAction="always"
         android:actionLayout="@layout/action_layout"
-        android:title="@string/com_facebook_loginview_log_out_action"/>
+        android:title="@string/com_facebook_loginview_log_out_action"
+        apps:showAsAction="always"/>
 </menu>

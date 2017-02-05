@@ -6,7 +6,6 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
-    android:id="@+id/content_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -29,9 +28,9 @@
             android:layout_height="@dimen/btn_height_download_set"
             android:layout_marginEnd="@dimen/download_set_margin_left_right"
             android:layout_marginRight="@dimen/download_set_margin_left_right"
-            android:contentDescription="@string/download"
             android:layout_weight="1"
             android:background="@drawable/btn_download_bg"
+            android:contentDescription="@string/download"
             android:paddingEnd="@dimen/download_set_margin_left_right"
             android:paddingRight="@dimen/download_set_margin_left_right"
 
@@ -44,9 +43,9 @@
             android:layout_height="@dimen/btn_height_download_set"
             android:layout_marginLeft="@dimen/download_set_margin_left_right"
             android:layout_marginStart="@dimen/download_set_margin_left_right"
-            android:contentDescription="@string/set_as_wallpaper"
             android:layout_weight="1"
             android:background="@drawable/btn_set_wallpaper_bg"
+            android:contentDescription="@string/set_as_wallpaper"
             android:text="@string/set_as_wallpaper"
             android:textColor="@android:color/white"/>
 
@@ -71,9 +70,9 @@
             android:layout_marginLeft="@dimen/like_toggle_margin_left"
             android:layout_marginStart="@dimen/like_toggle_margin_left"
             android:adjustViewBounds="true"
-            android:contentDescription="@string/like"
             android:background="@android:color/transparent"
             android:button="@drawable/like_drawable_toggle"
+            android:contentDescription="@string/like"
             android:focusable="false"
             android:textOff=""
             android:textOn=""/>
@@ -87,7 +86,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/like_heart_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -118,8 +116,8 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/prof_pic_iv"
             android:layout_width="@dimen/dp_dimens"
-            android:contentDescription="@string/photographer_dp"
-            android:layout_height="@dimen/dp_dimens"/>
+            android:layout_height="@dimen/dp_dimens"
+            android:contentDescription="@string/photographer_dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -174,8 +172,8 @@
             android:id="@+id/native_ad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            ads:adSize="360x132"
             android:contentDescription="@string/ads"
+            ads:adSize="360x132"
             ads:adUnitId="@string/test_add"
             >
         </com.google.android.gms.ads.NativeExpressAdView>
@@ -194,14 +192,14 @@
         android:paddingStart="@dimen/activity_horizontal_margin">
 
         <TextView
-            android:id="@+id/more_recommendation"
+            android:id="@+id/recommendation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:paddingTop="@dimen/section_margin"
-            android:text="More"
+            android:text="@string/more"
             android:textAppearance="@style/TextAppearance.AppCompat.Menu"
             tools:ignore="RtlCompat"/>
 
@@ -224,8 +222,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:elevation="8dp"
         android:contentDescription="@string/recomendation"
+        android:elevation="8dp"
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"

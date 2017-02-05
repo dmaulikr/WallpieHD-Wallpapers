@@ -48,7 +48,7 @@ public class LatestPhotoFragment extends Fragment {
     Disposable mLatestImageInitialDisposable;
     Disposable mLatestImageFollowingDisposable;
     private static final int MAX_ITEMS_PER_REQUEST = 30;
-   private int page;
+    private int page;
     PhotosAdapter photosAdapter;
 
     public LatestPhotoFragment() {
@@ -68,7 +68,6 @@ public class LatestPhotoFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_latest_photos, container, false);
     }
-
 
 
     @Override
@@ -93,12 +92,12 @@ public class LatestPhotoFragment extends Fragment {
         mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mRecyclerView.getLayoutManager()) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                mLatestImageFollowingDisposable=mWallpaperProvider.getLatestImages(page, MAX_ITEMS_PER_REQUEST)
+                mLatestImageFollowingDisposable = mWallpaperProvider.getLatestImages(page, MAX_ITEMS_PER_REQUEST)
                         .subscribe(
                                 wallpapersResponses -> {
 
                                     photosAdapter.addItems(wallpapersResponses);
-                                    photosAdapter.notifyItemRangeInserted((page-1)*MAX_ITEMS_PER_REQUEST,MAX_ITEMS_PER_REQUEST);
+                                    photosAdapter.notifyItemRangeInserted((page - 1) * MAX_ITEMS_PER_REQUEST, MAX_ITEMS_PER_REQUEST);
                                 },
                                 throwable -> {
                                     handleError(throwable);
@@ -138,7 +137,7 @@ public class LatestPhotoFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        if (mLatestImageInitialDisposable!=null && !mLatestImageInitialDisposable.isDisposed()) {
+        if (mLatestImageInitialDisposable != null && !mLatestImageInitialDisposable.isDisposed()) {
             mLatestImageInitialDisposable.dispose();
         }
         if (mLatestImageFollowingDisposable != null && !mLatestImageFollowingDisposable.isDisposed()) {
@@ -154,10 +153,9 @@ public class LatestPhotoFragment extends Fragment {
 
     public void handleError(Throwable throwable) {
         if (throwable instanceof IOException) {
-            snackBarResult("Timeout");
-        }
-        else if (throwable instanceof IllegalStateException) {
-            snackBarResult("ConversionError");
+            snackBarResult(getString(R.string.timeout));
+        } else if (throwable instanceof IllegalStateException) {
+            snackBarResult(getString(R.string.conversion_error));
         } else {
 
             snackBarResult(String.valueOf(throwable.getLocalizedMessage()));
@@ -166,6 +164,6 @@ public class LatestPhotoFragment extends Fragment {
 
     private void snackBarResult(String msg) {
         mProgressBar.setVisibility(View.GONE);
-        Snackbar.make(mRecyclerView,msg,Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mRecyclerView, msg, Snackbar.LENGTH_SHORT).show();
     }
 }

@@ -15,9 +15,7 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.fe.wallpie.R;
 import com.fe.wallpie.activity.PhotographerActivity;
-import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.fe.wallpie.model.search.Result;
-import com.fe.wallpie.model.search.SearchResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -189,19 +187,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
                     onItemClickListener.onItemClick(searchResponse, SearchViewHolder.this);
                 }
             });
-            mWallapaperShare.setOnClickListener(v -> {shareImage(searchResponse);});
+            mWallapaperShare.setOnClickListener(v -> {
+                shareImage(searchResponse);
+            });
 
         }
+
         private void shareImage(Result wallpapersResponse) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome wallpapper : "+wallpapersResponse.getLinks().getHtml());
+            sendIntent.putExtra(Intent.EXTRA_TEXT, String.format(itemView.getContext().getString(R.string.check_out), wallpapersResponse.getLinks().getHtml()));
             sendIntent.setType("text/plain");
             itemView.getContext().startActivity(sendIntent);
         }
 
     }
-
 
 
     public interface OnItemClickListener {

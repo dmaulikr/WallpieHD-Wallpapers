@@ -3,10 +3,6 @@ package com.fe.wallpie.model.parcellable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.fe.wallpie.model.photos.Urls;
-import com.fe.wallpie.model.photos.User;
-import com.fe.wallpie.model.photos.WallpapersResponse;
-
 /**
  * Created by Farmaan-PC on 27-01-2017.
  */

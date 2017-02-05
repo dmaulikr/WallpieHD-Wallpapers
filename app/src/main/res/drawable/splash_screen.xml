@@ -5,9 +5,10 @@
         android:drawable="@android:color/white"/>
 
     <item>
-    <bitmap
-        android:gravity="center"
+        <bitmap
+            android:gravity="center"
 
-        android:src="@drawable/ic_splash_image"/></item>
+            android:src="@drawable/ic_splash_image"/>
+    </item>
 
 </layer-list>

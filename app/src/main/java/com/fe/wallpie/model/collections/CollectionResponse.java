@@ -1,4 +1,3 @@
-
 package com.fe.wallpie.model.collections;
 
 import com.google.gson.annotations.SerializedName;
@@ -83,7 +82,7 @@ public class CollectionResponse {
     }
 
     public void setPrivate(Boolean mprivate) {
-        this.mPrivate=mprivate;
+        this.mPrivate = mprivate;
     }
 
     public String getPublishedAt() {

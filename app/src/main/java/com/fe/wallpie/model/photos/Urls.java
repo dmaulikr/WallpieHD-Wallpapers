@@ -1,4 +1,3 @@
-
 package com.fe.wallpie.model.photos;
 
 import android.os.Parcel;

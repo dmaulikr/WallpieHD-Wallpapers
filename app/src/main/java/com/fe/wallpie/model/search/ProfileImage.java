@@ -1,4 +1,3 @@
-
 package com.fe.wallpie.model.search;
 
 import com.google.gson.annotations.SerializedName;

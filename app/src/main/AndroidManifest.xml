@@ -18,6 +18,7 @@
 
     <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission-sdk-23 android:name="android.permission.WAKE_LOCK"/>
+
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
@@ -73,12 +74,13 @@
             android:label="@string/title_activity_search"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".activity.SplashActivity"
-                  android:theme="@style/SplashTheme">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN"/>
 
-            <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
@@ -91,8 +93,9 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/fav_widget_info"/>
         </receiver>
-        <service android:name=".widget.FavWidgetService"
-                 android:permission="android.permission.BIND_REMOTEVIEWS"/>
+        <service
+            android:name=".widget.FavWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

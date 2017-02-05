@@ -1,7 +1,6 @@
 package com.fe.wallpie.adapters;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Farmaan-PC on 24-01-2017.
@@ -28,7 +26,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
     LayoutInflater mInflater;
     OnItemClickListener mItemClickListener;
 
-    public CollectionAdapter(List<CollectionResponse> collectionResponses, Context context,OnItemClickListener itemClickListener) {
+    public CollectionAdapter(List<CollectionResponse> collectionResponses, Context context, OnItemClickListener itemClickListener) {
         mCollectionResponses = collectionResponses;
         mInflater = LayoutInflater.from(context);
         mItemClickListener = itemClickListener;
@@ -43,7 +41,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
     @Override
     public void onBindViewHolder(CollectionViewHolder holder, int position) {
         CollectionResponse collectionResponse = mCollectionResponses.get(position);
-        holder.bindItems(collectionResponse,mItemClickListener);
+        holder.bindItems(collectionResponse, mItemClickListener);
 
     }
 
@@ -61,6 +59,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         ImageView mCollectionCoverImage;
         @BindView(R.id.collection_name)
         TextView mCollectionName;
+
         public CollectionViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -79,7 +78,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClickListener.onItemClick(collectionResponse,CollectionViewHolder.this);
+                    itemClickListener.onItemClick(collectionResponse, CollectionViewHolder.this);
                 }
             });
 

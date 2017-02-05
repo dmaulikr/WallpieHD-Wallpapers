@@ -19,15 +19,15 @@ public class Wallpie extends Application {
     private static DatabaseReference sDatabaseReference;
     private static WallpaperManager mWallpaperManager;
     private static long sDownloadRef;
-    private  FirebaseAnalytics mFirebaseAnalytics ;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public void onCreate() {
         super.onCreate();
         sWallpie = this;
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);;
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mWallpaperManager = WallpaperManager.getInstance(this);
-        MobileAds.initialize(this,getString(R.string.app_id));
+        MobileAds.initialize(this, getString(R.string.app_id));
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
 
     }
@@ -42,18 +42,21 @@ public class Wallpie extends Application {
     }
 
     public static DatabaseReference getFavRef() {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null && sDatabaseReference!=null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && sDatabaseReference != null) {
             return sDatabaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         }
         return null;
 
     }
+
     public static int getDesiredMinimumHeight() {
         return mWallpaperManager.getDesiredMinimumHeight();
     }
+
     public static int getDesiredMinimumWidth() {
         return mWallpaperManager.getDesiredMinimumWidth();
     }
+
     public static void setDownloadRef(long id) {
         sDownloadRef = id;
     }

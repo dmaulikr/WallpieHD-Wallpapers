@@ -1,12 +1,12 @@
-
 package com.fe.wallpie.model.collection;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.annotations.SerializedName;
 
 public class CollectionImages implements Parcelable {
 

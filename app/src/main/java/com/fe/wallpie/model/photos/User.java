@@ -1,4 +1,3 @@
-
 package com.fe.wallpie.model.photos;
 
 import android.os.Parcel;
@@ -20,7 +19,7 @@ public class User implements Parcelable {
     @SerializedName("links")
     private Links mLinks;
     @SerializedName("location")
-    private String  mLocation;
+    private String mLocation;
     @SerializedName("name")
     private String mName;
     @SerializedName("portfolio_url")
@@ -83,7 +82,7 @@ public class User implements Parcelable {
         return mLocation;
     }
 
-    public void setLocation(String  location) {
+    public void setLocation(String location) {
         mLocation = location;
     }
 

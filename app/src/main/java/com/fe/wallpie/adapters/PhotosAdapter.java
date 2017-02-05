@@ -1,11 +1,8 @@
 package com.fe.wallpie.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,20 +15,14 @@ import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.fe.wallpie.R;
-import com.fe.wallpie.activity.DetailActivity;
 import com.fe.wallpie.activity.PhotographerActivity;
-import com.fe.wallpie.application.Wallpie;
-import com.fe.wallpie.model.parcellable.WallpaperParcel;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.net.IDN;
 import java.util.List;
 
 import butterknife.BindView;
@@ -48,7 +39,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
     LayoutInflater mLayoutInflater;
     OnItemClickListener mItemClickListener;
 
-    public PhotosAdapter(List<WallpapersResponse> wallpapersResponses, Activity activity,OnItemClickListener onItemClickListener) {
+    public PhotosAdapter(List<WallpapersResponse> wallpapersResponses, Activity activity, OnItemClickListener onItemClickListener) {
         mWallpapersResponses = wallpapersResponses;
         mLayoutInflater = LayoutInflater.from(activity);
         mItemClickListener = onItemClickListener;
@@ -70,11 +61,10 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
         try {
             holder.onBind(wallpapersResponse, mItemClickListener);
         } catch (Exception e) {
-            Log.d("PhotosAdapter", e.getMessage());
+            Log.d(PhotosAdapter.class.getName(), e.getMessage());
         }
 
     }
-
 
 
     @Override
@@ -102,10 +92,10 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
         }
 
 
-        public void onBind(final WallpapersResponse wallpapersResponse,final OnItemClickListener onItemClickListener) {
+        public void onBind(final WallpapersResponse wallpapersResponse, final OnItemClickListener onItemClickListener) {
             mPhotographerName.setText(wallpapersResponse.getUser().getName());
             mPhotographerName.setOnClickListener(v -> {
-                Intent intent=PhotographerActivity.createIntent(itemView.getContext(),
+                Intent intent = PhotographerActivity.createIntent(itemView.getContext(),
                         wallpapersResponse.getUser().getUsername(),
                         wallpapersResponse.getUser().getProfileImage().getMedium(),
                         wallpapersResponse.getUser().getName());
@@ -122,7 +112,6 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
             Glide.with(itemView.getContext())
                     .load(wallpapersResponse.getUser().getProfileImage().getMedium())
                     .into(mProfilePic);
-
 
 
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -193,20 +182,22 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
                     onItemClickListener.onItemClick(wallpapersResponse, PhotosViewHolder.this);
                 }
             });
-            mWallapaperShare.setOnClickListener(v -> {shareImage(wallpapersResponse);});
+            mWallapaperShare.setOnClickListener(v -> {
+                shareImage(wallpapersResponse);
+            });
 
         }
 
         private void shareImage(WallpapersResponse wallpapersResponse) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome wallpapper : "+wallpapersResponse.getLinks().getHtml());
+            sendIntent.putExtra(Intent.EXTRA_TEXT, String.format(itemView.getContext().getString(R.string.check_out), wallpapersResponse.getLinks().getHtml()));
             sendIntent.setType("text/plain");
             itemView.getContext().startActivity(sendIntent);
         }
     }
 
-    public interface  OnItemClickListener{
-        void onItemClick(WallpapersResponse wallpapersResponse,PhotosViewHolder photosViewHolder);
+    public interface OnItemClickListener {
+        void onItemClick(WallpapersResponse wallpapersResponse, PhotosViewHolder photosViewHolder);
     }
 }

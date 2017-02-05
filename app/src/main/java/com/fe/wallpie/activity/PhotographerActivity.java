@@ -4,16 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -50,7 +45,7 @@ public class PhotographerActivity extends BaseActivity {
     private static final String PHOTOGRAPHER_DP_EXTRA = "photographer_dp";
     String mUserName;
     String mProfilePicUrl;
-    WallpaperProvider mWallpaperProvider ;
+    WallpaperProvider mWallpaperProvider;
     Disposable mPhotographerPictureInitial;
     Disposable mPhotographerPictureFollowing;
     private static final int MAX_ITEMS_PER_REQUEST = 30;
@@ -70,10 +65,10 @@ public class PhotographerActivity extends BaseActivity {
 
         mUserName = getIntent().getStringExtra(PHOTOGRAPHER_USERNAME_EXTRA);
         mProfilePicUrl = getIntent().getStringExtra(PHOTOGRAPHER_DP_EXTRA);
-        mPhotographerName=getIntent().getStringExtra(PHOTOGRAPHER_NAME_EXTRA);
+        mPhotographerName = getIntent().getStringExtra(PHOTOGRAPHER_NAME_EXTRA);
 
         mWallpaperProvider = new WallpaperProvider(Wallpie.getDesiredMinimumHeight(), Wallpie.getDesiredMinimumWidth());
-        mRecyclerViewPhotographer.setLayoutManager(new GridLayoutManager(this,2));
+        mRecyclerViewPhotographer.setLayoutManager(new GridLayoutManager(this, 2));
 
         Glide.with(this).load(mProfilePicUrl).into(mCircleImageView);
         Glide.with(this)
@@ -82,6 +77,7 @@ public class PhotographerActivity extends BaseActivity {
                 .skipMemoryCache(true)
                 .into(mImageView);
     }
+
     private void setUpSeachView() {
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setOnSearchViewListener(this);
@@ -110,7 +106,7 @@ public class PhotographerActivity extends BaseActivity {
 
     }
 
-    public static Intent createIntent(Context context, String username,String profilePicUrl,String name) {
+    public static Intent createIntent(Context context, String username, String profilePicUrl, String name) {
         Intent intent = new Intent(context, PhotographerActivity.class);
         intent.putExtra(PHOTOGRAPHER_USERNAME_EXTRA, username);
         intent.putExtra(PHOTOGRAPHER_DP_EXTRA, profilePicUrl);
@@ -129,6 +125,7 @@ public class PhotographerActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         outState.putParcelable(BUNDLE_RECYLER_VIEW, mRecyclerViewPhotographer.getLayoutManager().onSaveInstanceState());
     }
+
     private WallpapersResponse recommendationToWallpaperResponse(RecommendationResponse recommendationResponse) {
         WallpapersResponse wallpapersResponse = new WallpapersResponse();
         Urls urls = new Urls();
@@ -147,6 +144,7 @@ public class PhotographerActivity extends BaseActivity {
         wallpapersResponse.setId(recommendationResponse.getId());
         return wallpapersResponse;
     }
+
     public void setUpToolbar() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -168,8 +166,7 @@ public class PhotographerActivity extends BaseActivity {
     public void handleError(Throwable throwable) {
         if (throwable instanceof IOException) {
             snackBarResult(getString(R.string.no_internet_connection));
-        }
-        else if (throwable instanceof IllegalStateException) {
+        } else if (throwable instanceof IllegalStateException) {
             snackBarResult(getString(R.string.conversion_error));
         } else {
 
@@ -178,7 +175,7 @@ public class PhotographerActivity extends BaseActivity {
     }
 
     private void snackBarResult(String msg) {
-        Snackbar.make(mRecyclerViewPhotographer,msg,Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mRecyclerViewPhotographer, msg, Snackbar.LENGTH_SHORT).show();
     }
 
 

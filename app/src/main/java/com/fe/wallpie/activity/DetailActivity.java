@@ -11,26 +11,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
@@ -39,7 +30,6 @@ import com.fe.wallpie.R;
 import com.fe.wallpie.adapters.RecommendationAdapter;
 import com.fe.wallpie.api.WallpaperProvider;
 import com.fe.wallpie.application.Wallpie;
-import com.fe.wallpie.model.collection.CollectionImages;
 import com.fe.wallpie.model.photos.ProfileImage;
 import com.fe.wallpie.model.photos.Urls;
 import com.fe.wallpie.model.photos.User;
@@ -57,7 +47,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -90,7 +79,7 @@ public class DetailActivity extends BaseActivity {
     CircleImageView mProfPic;
     @BindView(R.id.photograpger_bio)
     TextView mPhotographerBio;
-    @BindView(R.id.more_recommendation)
+    @BindView(R.id.recommendation)
     TextView mMoreRecommendation;
     @BindView(R.id.recommendation_rv)
     RecyclerView mRecommendation;
@@ -109,6 +98,7 @@ public class DetailActivity extends BaseActivity {
     WallpaperManager mWallpaperManager;
     private static final String mWallpaperParcel = "wallpaper_parcel";
     private static final int MAX_RECOMMENDATION = 4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,6 +153,7 @@ public class DetailActivity extends BaseActivity {
         intent.putExtra(mWallpaperParcel, parcelable);
         return intent;
     }
+
     private void setUpSeachView() {
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setOnSearchViewListener(this);
@@ -194,9 +185,9 @@ public class DetailActivity extends BaseActivity {
         } else {
             mPhotographerBio.setVisibility(View.GONE);
         }
-        mMoreFromPhotgrapher.setText("More from " + mWallpapersResponse.getUser().getFirstName());
+        mMoreFromPhotgrapher.setText(String.format(getString(R.string.more_from), mWallpapersResponse.getUser().getFirstName()));
         setLikeButton();
-        mExpressAdView.loadAd( new AdRequest.Builder()
+        mExpressAdView.loadAd(new AdRequest.Builder()
                 .build());
         mExpressAdView.setAdListener(new AdListener() {
             @Override
@@ -212,21 +203,22 @@ public class DetailActivity extends BaseActivity {
                 showErrorSnackBar();
             }
         });
-        mButtonSetWallpaper.setOnClickListener(v ->{
+        mButtonSetWallpaper.setOnClickListener(v -> {
             if (AndroidUtils.isNetworkAvailable()) {
                 downloadWallpaper();
             } else {
                 showErrorSnackBar();
             }
         });
-        mMoreRecommendation.setOnClickListener(v ->{
-            Intent intent=PhotographerActivity.createIntent(this,
+        mMoreRecommendation.setOnClickListener(v -> {
+            Intent intent = PhotographerActivity.createIntent(this,
                     mWallpapersResponse.getUser().getUsername(),
                     mWallpapersResponse.getUser().getProfileImage().getMedium(),
                     mWallpapersResponse.getUser().getName());
             startActivity(intent);
         });
     }
+
     private void setLikeButton() {
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -292,6 +284,7 @@ public class DetailActivity extends BaseActivity {
             });
         }
     }
+
     private void downloadOnly() {
         if (!PermissionManager.checkWriteStoragePermission(this)) {
             PermissionManager.requestWriteStoragePermission(this);
@@ -300,7 +293,8 @@ public class DetailActivity extends BaseActivity {
             initializeWallPaperDownLoad();
         }
     }
-    public void downloadWallpaper(){
+
+    public void downloadWallpaper() {
         if (!PermissionManager.checkWriteStoragePermission(this)) {
             PermissionManager.requestWriteStoragePermission(this);
 
@@ -319,7 +313,6 @@ public class DetailActivity extends BaseActivity {
                     BuildConfig.APPLICATION_ID + ".provider",
                     fullPathToFile);
 
-            Log.d(DetailActivity.class.getName(), "setWallpaper: "+capturedImage.toString());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 Intent setWallpaper = mWallpaperManager.getCropAndSetWallpaperIntent(capturedImage);
                 startActivity(setWallpaper);
@@ -334,24 +327,23 @@ public class DetailActivity extends BaseActivity {
 
         } else {
             initializeWallPaperDownLoad();
-            startActivityForResult(SetUpActivity.creatIntent(this, mWallpapersResponse),SET_WALLPAPER);
+            startActivityForResult(SetUpActivity.creatIntent(this, mWallpapersResponse), SET_WALLPAPER);
         }
     }
-
 
 
     private void initializeWallPaperDownLoad() {
         String url = mWallpapersResponse.getUrls().getRegular();
         String url1 = url.substring(0, url.indexOf("?ixlib"));
         String customUrl = url1 + WallpaperProvider.CUSTOM_PARAMS;
-        Log.d(DetailActivity.class.getName(), "initializeWallPaperDownLoad: "+customUrl);
+        Log.d(DetailActivity.class.getName(), "initializeWallPaperDownLoad: " + customUrl);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(customUrl));
         request.setTitle(getString(R.string.app_name)).setDescription("Wallpaper by" + mWallpapersResponse.getUser().getFirstName());
-        request.setDestinationInExternalPublicDir( Environment.DIRECTORY_PICTURES,"wallpie/"+mWallpapersResponse.getId() + ".jpg");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, "wallpie/" + mWallpapersResponse.getId() + ".jpg");
         request.setVisibleInDownloadsUi(true);
         request.allowScanningByMediaScanner();
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-        long downloadRef=mDownloadManager.enqueue(request);
+        long downloadRef = mDownloadManager.enqueue(request);
         Wallpie.setDownloadRef(downloadRef);
 
     }

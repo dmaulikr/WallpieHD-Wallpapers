@@ -11,9 +11,7 @@ import com.bumptech.glide.Glide;
 import com.fe.wallpie.R;
 import com.fe.wallpie.model.user.RecommendationResponse;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,7 +29,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
 
     public RecommendationAdapter(List<RecommendationResponse> recommendationResponses, Context context, OnItemClickListener onItemClickListener) {
         Collections.reverse(recommendationResponses);
-        mRecommendationResponses = recommendationResponses ;
+        mRecommendationResponses = recommendationResponses;
         mInflater = LayoutInflater.from(context);
         mOnItemClickListener = onItemClickListener;
     }
@@ -42,6 +40,7 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
         View view = mInflater.inflate(R.layout.wallpaper_recomendation, parent, false);
         return new RecommendationViewHolder(view);
     }
+
     @Override
     public void onBindViewHolder(RecommendationViewHolder holder, int position) {
         RecommendationResponse recommendationResponse = mRecommendationResponses.get(position);
@@ -52,9 +51,11 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
     public int getItemCount() {
         return mRecommendationResponses.size();
     }
+
     public class RecommendationViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.wallpaper_recomdation)
         public ImageView mWallpaperRecommendation;
+
         public RecommendationViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -66,11 +67,13 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
                     .placeholder(R.drawable.wallpaper_placeholder)
                     .thumbnail(0.1f)
                     .into(mWallpaperRecommendation);
-            itemView.setOnClickListener(v -> {onItemClickListener.onItemClick(recommendationResponse,RecommendationViewHolder.this);});
+            itemView.setOnClickListener(v -> {
+                onItemClickListener.onItemClick(recommendationResponse, RecommendationViewHolder.this);
+            });
         }
     }
 
-    public interface OnItemClickListener{
-        void onItemClick(RecommendationResponse recommendationResponse,RecommendationViewHolder recomedationViewHolder);
+    public interface OnItemClickListener {
+        void onItemClick(RecommendationResponse recommendationResponse, RecommendationViewHolder recomedationViewHolder);
     }
 }

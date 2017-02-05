@@ -10,7 +10,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +17,10 @@ import android.widget.ProgressBar;
 
 import com.fe.wallpie.R;
 import com.fe.wallpie.activity.DetailActivity;
+import com.fe.wallpie.adapters.PhotosAdapter;
 import com.fe.wallpie.api.WallpaperProvider;
 import com.fe.wallpie.listener.EndlessRecyclerViewScrollListener;
-import com.fe.wallpie.model.parcellable.WallpaperParcel;
 import com.fe.wallpie.model.photos.WallpapersResponse;
-import com.fe.wallpie.adapters.PhotosAdapter;
-import com.fe.wallpie.utility.AndroidUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,8 +28,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
-
-import static io.reactivex.internal.operators.observable.ObservableBlockingSubscribe.subscribe;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,7 +58,7 @@ public class PopularPhotosFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mWallpaperProvider = new WallpaperProvider(1920, 1080);
-        page=1;
+        page = 1;
     }
 
     @Override
@@ -83,7 +78,7 @@ public class PopularPhotosFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mPopularImageInitialDisposable = mWallpaperProvider.getPopularImages(page,MAX_ITEMS_PER_REQUEST).
+        mPopularImageInitialDisposable = mWallpaperProvider.getPopularImages(page, MAX_ITEMS_PER_REQUEST).
                 subscribe(
                         this::populatePhotos,
                         throwable -> {
@@ -98,7 +93,7 @@ public class PopularPhotosFragment extends Fragment {
                                 wallpapersResponses -> {
 
                                     mPhotosAdapter.addItems(wallpapersResponses);
-                                    mPhotosAdapter.notifyItemRangeInserted((page-1)*MAX_ITEMS_PER_REQUEST,MAX_ITEMS_PER_REQUEST);
+                                    mPhotosAdapter.notifyItemRangeInserted((page - 1) * MAX_ITEMS_PER_REQUEST, MAX_ITEMS_PER_REQUEST);
                                 },
                                 throwable -> {
                                     handleError(throwable);
@@ -137,7 +132,7 @@ public class PopularPhotosFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        if (mPopularImageInitialDisposable!=null && !mPopularImageInitialDisposable.isDisposed()) {
+        if (mPopularImageInitialDisposable != null && !mPopularImageInitialDisposable.isDisposed()) {
             mPopularImageInitialDisposable.dispose();
         }
         if (mPopularImageFollowingDisposable != null && !mPopularImageFollowingDisposable.isDisposed()) {
@@ -150,12 +145,12 @@ public class PopularPhotosFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
     public void handleError(Throwable throwable) {
         if (throwable instanceof IOException) {
-            snackBarResult("Timeout");
-        }
-        else if (throwable instanceof IllegalStateException) {
-            snackBarResult("ConversionError");
+            snackBarResult(getString(R.string.timeout));
+        } else if (throwable instanceof IllegalStateException) {
+            snackBarResult(getString(R.string.conversion_error));
         } else {
 
             snackBarResult(String.valueOf(throwable.getLocalizedMessage()));
@@ -164,6 +159,6 @@ public class PopularPhotosFragment extends Fragment {
 
     private void snackBarResult(String msg) {
         mProgressBar.setVisibility(View.GONE);
-        Snackbar.make(mRecyclerView,msg,Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mRecyclerView, msg, Snackbar.LENGTH_SHORT).show();
     }
 }

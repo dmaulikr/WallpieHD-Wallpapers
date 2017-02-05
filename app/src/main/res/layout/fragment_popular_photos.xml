@@ -1,15 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             tools:context="com.fe.wallpie.fragment.PopularPhotosFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.fe.wallpie.fragment.PopularPhotosFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/photos_recyclerview"
         android:layout_width="match_parent"
-        android:contentDescription="@string/popular"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:contentDescription="@string/popular">
     </android.support.v7.widget.RecyclerView>
+
     <include layout="@layout/progress_bar_layout"/>
 </RelativeLayout>

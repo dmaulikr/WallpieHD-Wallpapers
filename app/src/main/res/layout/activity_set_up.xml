@@ -2,7 +2,6 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_set_up"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -10,10 +9,9 @@
 
     <ImageView
         android:id="@+id/loading_wait"
-        android:contentDescription="@string/loading"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+        android:layout_height="match_parent"
+        android:contentDescription="@string/loading"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

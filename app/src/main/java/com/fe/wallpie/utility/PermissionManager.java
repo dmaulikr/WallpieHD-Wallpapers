@@ -1,7 +1,6 @@
 package com.fe.wallpie.utility;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +13,7 @@ public class PermissionManager {
 
     public static final int REQUEST_WRITE_STORAGE = 100;
     public static final int REQUEST_READ_STORAGE = 101;
+
     public static boolean checkReadStoragePermission(Activity activity) {
         int permissionReadStorage = ContextCompat.checkSelfPermission(activity,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -22,15 +22,17 @@ public class PermissionManager {
         }
         return false;
     }
-    public   static boolean checkWriteStoragePermission(Activity activity) {
+
+    public static boolean checkWriteStoragePermission(Activity activity) {
 
         int permissionWriteStorage = ContextCompat.checkSelfPermission(activity,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if ( permissionWriteStorage == PackageManager.PERMISSION_GRANTED) {
+        if (permissionWriteStorage == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
         return false;
     }
+
     public static void requestReadStoragePermission(Activity activity) {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(activity,
@@ -60,6 +62,7 @@ public class PermissionManager {
             }
         }
     }
+
     public static void requestWriteStoragePermission(Activity activity) {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(activity,
@@ -80,7 +83,7 @@ public class PermissionManager {
                 // No explanation needed, we can request the permission.
 
                 ActivityCompat.requestPermissions(activity,
-                        new String[]{ android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         REQUEST_WRITE_STORAGE);
 
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an

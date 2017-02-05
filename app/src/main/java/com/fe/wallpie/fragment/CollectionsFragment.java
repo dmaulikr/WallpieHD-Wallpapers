@@ -8,12 +8,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.fe.wallpie.R;
 import com.fe.wallpie.activity.PhotosActivity;
@@ -21,7 +19,6 @@ import com.fe.wallpie.adapters.CollectionAdapter;
 import com.fe.wallpie.api.WallpaperProvider;
 import com.fe.wallpie.listener.EndlessRecyclerViewScrollListener;
 import com.fe.wallpie.model.collections.CollectionResponse;
-import com.fe.wallpie.utility.AndroidUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -63,7 +60,6 @@ public class CollectionsFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,24 +78,24 @@ public class CollectionsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mCollectionInitialSubscription=mWallpaperProvider.getCollections(page,MAX_ITEMS_PER_REQUEST).
+        mCollectionInitialSubscription = mWallpaperProvider.getCollections(page, MAX_ITEMS_PER_REQUEST).
                 subscribe(collectionResponses -> populateCollection(collectionResponses),
-                throwable -> {
-                    handleError(throwable);
-                });
+                        throwable -> {
+                            handleError(throwable);
+                        });
 
         mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mRecyclerView.getLayoutManager()) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                mCollectionFollowingSubscription=mWallpaperProvider.getCollections(page, MAX_ITEMS_PER_REQUEST)
+                mCollectionFollowingSubscription = mWallpaperProvider.getCollections(page, MAX_ITEMS_PER_REQUEST)
                         .subscribe(
                                 collectionResponses -> {
 
                                     mCollectionAdapter.addItems(collectionResponses);
-                                    mCollectionAdapter.notifyItemRangeInserted((page-1)*MAX_ITEMS_PER_REQUEST,MAX_ITEMS_PER_REQUEST);
+                                    mCollectionAdapter.notifyItemRangeInserted((page - 1) * MAX_ITEMS_PER_REQUEST, MAX_ITEMS_PER_REQUEST);
                                 },
                                 throwable -> {
-                                   handleError(throwable);
+                                    handleError(throwable);
                                 });
             }
         });
@@ -111,7 +107,7 @@ public class CollectionsFragment extends Fragment {
         mCollectionAdapter = new CollectionAdapter(collectionResponses, getActivity(), new CollectionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CollectionResponse collectionResponse, CollectionAdapter.CollectionViewHolder collectionViewHolder) {
-                startActivity(PhotosActivity.ceateIntent(getActivity(),collectionResponse.getId().toString(),collectionResponse.getTitle()));
+                startActivity(PhotosActivity.ceateIntent(getActivity(), collectionResponse.getId().toString(), collectionResponse.getTitle()));
             }
         });
         mRecyclerView.setAdapter(mCollectionAdapter);
@@ -145,11 +141,11 @@ public class CollectionsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
     public void handleError(Throwable throwable) {
         if (throwable instanceof IOException) {
             snackBarResult(getString(R.string.no_internet_connection));
-        }
-        else if (throwable instanceof IllegalStateException) {
+        } else if (throwable instanceof IllegalStateException) {
             snackBarResult(getString(R.string.conversion_error));
         } else {
 
@@ -159,6 +155,6 @@ public class CollectionsFragment extends Fragment {
 
     private void snackBarResult(String msg) {
         mProgressBar.setVisibility(View.GONE);
-        Snackbar.make(mRecyclerView,msg,Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mRecyclerView, msg, Snackbar.LENGTH_SHORT).show();
     }
 }

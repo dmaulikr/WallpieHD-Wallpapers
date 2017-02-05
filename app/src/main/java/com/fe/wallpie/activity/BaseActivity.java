@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -25,7 +22,7 @@ import butterknife.BindView;
 
 public class BaseActivity extends AppCompatActivity implements
         MaterialSearchView.SearchViewListener,
-        MaterialSearchView.OnQueryTextListener{
+        MaterialSearchView.OnQueryTextListener {
 
 
     @BindView(R.id.search_view)
@@ -34,6 +31,7 @@ public class BaseActivity extends AppCompatActivity implements
     Toolbar mToolbar;
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
+
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
@@ -55,7 +53,7 @@ public class BaseActivity extends AppCompatActivity implements
     public boolean onQueryTextSubmit(String query) {
         mSearchView.closeSearch();
         Log.d(BaseActivity.class.getName(), "onQueryTextSubmit: ");
-        Intent intent=SearchActivity.createIntent(this, query);
+        Intent intent = SearchActivity.createIntent(this, query);
         startActivity(intent);
         return true;
 
@@ -73,17 +71,17 @@ public class BaseActivity extends AppCompatActivity implements
         return true;
     }
 
-    protected void showSnackbar(int id){
+    protected void showSnackbar(int id) {
         Snackbar.make(mCoordinatorLayout, getString(id), Snackbar.LENGTH_SHORT).show();
     }
 
     protected void showSnakcBar(String msg) {
         Snackbar.make(mCoordinatorLayout, msg, Snackbar.LENGTH_SHORT).show();
     }
+
     protected void setUpToolbar() {
         setSupportActionBar(mToolbar);
     }
-
 
 
     @Override

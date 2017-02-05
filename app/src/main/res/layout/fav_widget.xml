@@ -19,6 +19,6 @@
               android:text="@string/empty_view_text"
               android:textColor="#ffffff"
               android:textSize="20sp"
-              android:visibility="gone"
-              android:textStyle="bold"/>
+              android:textStyle="bold"
+              android:visibility="gone"/>
 </RelativeLayout>

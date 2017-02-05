@@ -10,6 +10,7 @@
     <ImageView
         android:id="@+id/fav_image"
         android:layout_width="match_parent"
+        android:contentDescription="@string/favorrite_image"
         android:layout_height="@dimen/fav_img_height"/>
 
 </FrameLayout>

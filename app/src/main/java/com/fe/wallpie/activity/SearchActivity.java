@@ -4,19 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.fe.wallpie.R;
-import com.fe.wallpie.adapters.PhotosAdapter;
 import com.fe.wallpie.adapters.SearchAdapter;
 import com.fe.wallpie.api.WallpaperProvider;
 import com.fe.wallpie.application.Wallpie;
@@ -26,8 +21,6 @@ import com.fe.wallpie.model.photos.Urls;
 import com.fe.wallpie.model.photos.User;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.fe.wallpie.model.search.Result;
-import com.fe.wallpie.model.search.SearchResponse;
-import com.fe.wallpie.model.user.RecommendationResponse;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.IOException;
@@ -67,7 +60,7 @@ public class SearchActivity extends BaseActivity {
         search = getIntent().getStringExtra(SEARCH_KWORD_EXTRA);
         setUpToolbar();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mOnItemClickListener=(searchResponse, searchViewHolder) -> {
+        mOnItemClickListener = (searchResponse, searchViewHolder) -> {
             Intent intent = DetailActivity.createIntent(SearchActivity.this, searchToWallpaperResponse(searchResponse));
             ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, searchViewHolder.mWallpaper, getString(R.string.shared_element_transition_wallpaper));
             startActivity(intent, optionsCompat.toBundle());
@@ -88,7 +81,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(BUDNLE_SEARCH,search);
+        outState.putString(BUDNLE_SEARCH, search);
         outState.putParcelable(BUNDLE_RECYLER_VIEW, mRecyclerView.getLayoutManager().onSaveInstanceState());
     }
 
@@ -103,12 +96,12 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void scrollSearch(int page) {
-        mDisposableFollowing=mWallpaperProvider.getSearchResult(search, MAX_ITEMS_PER_REQUEST,page)
+        mDisposableFollowing = mWallpaperProvider.getSearchResult(search, MAX_ITEMS_PER_REQUEST, page)
                 .subscribe(
                         seachResponse -> {
 
                             searchAdapter.addItems(seachResponse.getResults());
-                            searchAdapter.notifyItemRangeInserted((page-1)*MAX_ITEMS_PER_REQUEST,MAX_ITEMS_PER_REQUEST);
+                            searchAdapter.notifyItemRangeInserted((page - 1) * MAX_ITEMS_PER_REQUEST, MAX_ITEMS_PER_REQUEST);
                         },
                         throwable -> {
                             handleError(throwable);
@@ -135,15 +128,16 @@ public class SearchActivity extends BaseActivity {
     private void populatePhotos(List<Result> searchResponses) {
         mProgressBar.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
-        searchAdapter = new SearchAdapter(this,searchResponses,mOnItemClickListener);
+        searchAdapter = new SearchAdapter(this, searchResponses, mOnItemClickListener);
         mRecyclerView.setAdapter(searchAdapter);
     }
 
     public static Intent createIntent(Context context, String searchKeyword) {
-        Intent intent = new Intent(context,SearchActivity.class);
+        Intent intent = new Intent(context, SearchActivity.class);
         intent.putExtra(SEARCH_KWORD_EXTRA, searchKeyword);
         return intent;
     }
+
     private void setUpSeachView() {
         mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -153,10 +147,10 @@ public class SearchActivity extends BaseActivity {
                 mSearchView.closeSearch();
                 mProgressBar.setVisibility(View.VISIBLE);
                 search = query;
-                mDisposableInitial=mWallpaperProvider.getSearchResult(search, MAX_ITEMS_PER_REQUEST, page)
+                mDisposableInitial = mWallpaperProvider.getSearchResult(search, MAX_ITEMS_PER_REQUEST, page)
                         .subscribe(searchResponse -> {
                             populatePhotos(searchResponse.getResults());
-                        },throwable -> handleError(throwable));
+                        }, throwable -> handleError(throwable));
                 mRecyclerView.removeOnScrollListener(mEndlessRecyclerViewScrollListener);
                 mEndlessRecyclerViewScrollListener = getListener();
                 mRecyclerView.addOnScrollListener(mEndlessRecyclerViewScrollListener);
@@ -201,11 +195,11 @@ public class SearchActivity extends BaseActivity {
             mDisposableFollowing.dispose();
         }
     }
+
     public void handleError(Throwable throwable) {
         if (throwable instanceof IOException) {
             snackBarResult("Timeout");
-        }
-        else if (throwable instanceof IllegalStateException) {
+        } else if (throwable instanceof IllegalStateException) {
             snackBarResult("ConversionError");
         } else {
 
@@ -215,7 +209,7 @@ public class SearchActivity extends BaseActivity {
 
     private void snackBarResult(String msg) {
         mProgressBar.setVisibility(View.GONE);
-        Snackbar.make(mRecyclerView,msg,Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mRecyclerView, msg, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

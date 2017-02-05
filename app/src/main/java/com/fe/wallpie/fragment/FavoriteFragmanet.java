@@ -13,13 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fe.wallpie.R;
 import com.fe.wallpie.activity.DetailActivity;
 import com.fe.wallpie.adapters.FavoriteAdapter;
-import com.fe.wallpie.application.Wallpie;
 import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -64,7 +62,7 @@ public class FavoriteFragmanet extends Fragment {
         try {
             outState.putParcelable(BUNDLE_RV, mFavRecyclerView.getLayoutManager().onSaveInstanceState());
         } catch (NullPointerException e) {
-            Log.d(FavoriteFragmanet.class.getName(), "onSaveInstanceState: "+e.getMessage());
+            Log.d(FavoriteFragmanet.class.getName(), "onSaveInstanceState: " + e.getMessage());
         }
     }
 

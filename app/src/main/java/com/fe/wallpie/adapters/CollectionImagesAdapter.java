@@ -15,10 +15,8 @@ import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.fe.wallpie.R;
-import com.fe.wallpie.activity.DetailActivity;
 import com.fe.wallpie.activity.PhotographerActivity;
 import com.fe.wallpie.model.collection.CollectionImages;
-import com.fe.wallpie.model.photos.WallpapersResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,8 +61,9 @@ public class CollectionImagesAdapter extends RecyclerView.Adapter<CollectionImag
         try {
             holder.bind(collectionImages, mOnItemClickListner);
         } catch (Exception e) {
-            Log.d(CollectionImagesAdapter.class.getName(), "onBindViewHolder: " + e.getMessage());
+            Log.d(CollectionImagesAdapter.class.getName(), e.getMessage());
         }
+
     }
 
     @Override
@@ -183,14 +182,16 @@ public class CollectionImagesAdapter extends RecyclerView.Adapter<CollectionImag
                 }
             });
 
-            mWallapaperShare.setOnClickListener(v -> {shareImage(collectionImages);});
+            mWallapaperShare.setOnClickListener(v -> {
+                shareImage(collectionImages);
+            });
 
         }
 
         private void shareImage(CollectionImages collectionImages) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome wallpapper : "+collectionImages.getLinks().getHtml());
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome wallpapper : " + collectionImages.getLinks().getHtml());
             sendIntent.setType("text/plain");
             itemView.getContext().startActivity(sendIntent);
         }

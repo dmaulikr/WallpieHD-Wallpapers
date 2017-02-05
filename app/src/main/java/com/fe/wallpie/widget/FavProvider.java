@@ -31,6 +31,7 @@ class FavProvider implements RemoteViewsService.RemoteViewsFactory {
     DatabaseReference mReference;
     int mWidgetId;
     List<WallpapersResponse> mWallpapersResponses;
+
     public FavProvider(Context ctx, Intent intent) {
         mContext = ctx;
         mWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -60,7 +61,7 @@ class FavProvider implements RemoteViewsService.RemoteViewsFactory {
                             dataSnapshot.getChildren()) {
                         WallpapersResponse wallpapersResponse = data.getValue(WallpapersResponse.class);
                         mWallpapersResponses.add(wallpapersResponse);
-                        Log.d(FavProvider.class.getName(), "populateData:datasna"+wallpapersResponse.getUser());
+                        Log.d(FavProvider.class.getName(), "populateData:datasna" + wallpapersResponse.getUser());
                     }
                     semaphore.release();
                 }
@@ -91,7 +92,7 @@ class FavProvider implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        Log.d(FavProvider.class.getName(), "populateData:size"+mWallpapersResponses.size());
+        Log.d(FavProvider.class.getName(), "populateData:size" + mWallpapersResponses.size());
         return mWallpapersResponses.size();
     }
 
@@ -103,7 +104,7 @@ class FavProvider implements RemoteViewsService.RemoteViewsFactory {
                 .load(wallpapersResponse.getUrls().getSmall())
                 .asBitmap();
         FutureTarget futureTarget = bitmapRequestBuilder.into(200, 200);
-        try{
+        try {
             remoteViews.setImageViewBitmap(R.id.fav_image, (Bitmap) futureTarget.get());
         } catch (InterruptedException e) {
             e.printStackTrace();

@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -145,7 +143,7 @@ public class PhotosActivity extends BaseActivity {
         return wallpapersResponse;
     }
 
-    public static Intent ceateIntent(Context context, String id,String name) {
+    public static Intent ceateIntent(Context context, String id, String name) {
         Intent intent = new Intent(context, PhotosActivity.class);
         intent.putExtra(COLLECTION_ID, id);
         intent.putExtra(COLLECTION_NAME, name);
@@ -166,8 +164,7 @@ public class PhotosActivity extends BaseActivity {
     public void handleError(Throwable throwable) {
         if (throwable instanceof IOException) {
             snackBarResult(getString(R.string.no_internet_connection));
-        }
-        else if (throwable instanceof IllegalStateException) {
+        } else if (throwable instanceof IllegalStateException) {
             snackBarResult(getString(R.string.conversion_error));
         } else {
 
@@ -177,14 +174,16 @@ public class PhotosActivity extends BaseActivity {
 
     private void snackBarResult(String msg) {
         mProgressBar.setVisibility(View.GONE);
-        Snackbar.make(mCollectionImagesRecylerView,msg,Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mCollectionImagesRecylerView, msg, Snackbar.LENGTH_SHORT).show();
     }
+
     public void setUpToolbar() {
         super.setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setTitle(mCOllectionName);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

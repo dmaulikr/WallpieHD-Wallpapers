@@ -102,15 +102,14 @@ public class MainActivity extends BaseActivity implements
 
             if (resultCode == RESULT_OK) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                showSnakcBar("Welcome " + user.getDisplayName());
+                showSnakcBar(String.format(getString(R.string.welcome), user.getDisplayName()));
                 updateUserInfo(user);
 
                 Wallpie.setFavRef(FirebaseDatabase.getInstance().getReference("favorite"));
-                return;
-            } else if (resultCode==RESULT_CANCELED){
-                if (response!=null &&response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+            } else if (resultCode == RESULT_CANCELED) {
+                if (response != null && response.getErrorCode() == ErrorCodes.NO_NETWORK) {
                     showSnackbar(R.string.no_internet_connection);
-                } else if (response!=null && response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                } else if (response != null && response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
                     showSnackbar(R.string.unknown_error);
                 }
             }
@@ -152,8 +151,8 @@ public class MainActivity extends BaseActivity implements
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
         if (user != null) {
-            Toast.makeText(MainActivity.this, "Logged In", Toast.LENGTH_SHORT).show();
-        }else {
+            Toast.makeText(MainActivity.this, R.string.logged_in, Toast.LENGTH_SHORT).show();
+        } else {
             startActivityForResult(
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
@@ -165,6 +164,7 @@ public class MainActivity extends BaseActivity implements
         }
 
     }
+
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -182,7 +182,7 @@ public class MainActivity extends BaseActivity implements
         mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_closed);
         mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
         mActionBarDrawerToggle.syncState();
-        View header=mNavigationView.getHeaderView(0);
+        View header = mNavigationView.getHeaderView(0);
         mProfileDp = (CircleImageView) header.findViewById(R.id.profile_dp);
         mProfileBg = (ImageView) header.findViewById(R.id.poster_bg);
         mUserName = (TextView) header.findViewById(R.id.tv_name);
@@ -196,15 +196,15 @@ public class MainActivity extends BaseActivity implements
             removeUserInfo();
         }
 
-       mNavigationView.setNavigationItemSelectedListener(item -> {
-           if (item.getItemId() == R.id.logout) {
-               FirebaseAuth.getInstance().signOut();
-               removeUserInfo();
-               return true;
-           }
-           return false;
+        mNavigationView.setNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.logout) {
+                FirebaseAuth.getInstance().signOut();
+                removeUserInfo();
+                return true;
+            }
+            return false;
 
-       });
+        });
 
     }
 

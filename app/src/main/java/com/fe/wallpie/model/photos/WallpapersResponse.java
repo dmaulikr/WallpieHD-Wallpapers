@@ -1,13 +1,12 @@
-
 package com.fe.wallpie.model.photos;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.annotations.SerializedName;
 
 
 public class WallpapersResponse implements Parcelable {

@@ -1,4 +1,3 @@
-
 package com.fe.wallpie.model.collection;
 
 import android.os.Parcel;
@@ -60,11 +59,11 @@ public class User implements Parcelable {
         mId = id;
     }
 
-    public String  getLastName() {
+    public String getLastName() {
         return mLastName;
     }
 
-    public void setLastName(String  last_name) {
+    public void setLastName(String last_name) {
         mLastName = last_name;
     }
 

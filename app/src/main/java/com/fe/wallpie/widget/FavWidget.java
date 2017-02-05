@@ -49,7 +49,7 @@ public class FavWidget extends AppWidgetProvider {
                 svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
         remoteViews.setRemoteAdapter(appWidgetId, R.id.fav_list,
                 svcIntent);
-        remoteViews.setProgressBar(R.layout.progress_bar_layout,100,1,true);
+        remoteViews.setProgressBar(R.layout.progress_bar_layout, 100, 1, true);
         remoteViews.setEmptyView(R.id.fav_list, R.id.empty_view);
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);

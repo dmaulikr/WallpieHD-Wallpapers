@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/white"
-    app:cardPreventCornerOverlap="true"
-    app:cardCornerRadius="@dimen/card_corner_radius"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/collections_item"
     android:layout_margin="@dimen/colletion_card_margin"
-    android:layout_height="@dimen/collections_item">
+    android:background="@android:color/white"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardPreventCornerOverlap="true">
+
     <ImageView
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
         android:id="@+id/collection_cover_img"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/collection_image"
+        android:scaleType="centerCrop"/>
+
     <View
-        android:background="@drawable/scrim_overlay_iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/view" />
+        android:background="@drawable/scrim_overlay_iv"/>
 
     <TextView
-        android:layout_marginTop="@dimen/collection_name_top_margin"
         android:id="@+id/collection_name"
-        android:textColor="@color/secondaryText"
-        android:textAlignment="center"
-        android:textSize="@dimen/collection_text_size"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/collection_name_top_margin"
+        android:textAlignment="center"
+        android:textColor="@color/secondaryText"
+        android:textSize="@dimen/collection_text_size"/>
 
 </android.support.v7.widget.CardView>
