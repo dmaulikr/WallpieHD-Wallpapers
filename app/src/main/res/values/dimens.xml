@@ -54,4 +54,5 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="like_margin_start">10dp</dimen>
     <dimen name="margin_top_widget">5dp</dimen>
     <dimen name="fav_img_height">200dp</dimen>
+    <dimen name="image_max_height">400dp</dimen>
 </resources>

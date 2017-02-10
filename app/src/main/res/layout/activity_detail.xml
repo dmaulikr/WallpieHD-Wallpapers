@@ -24,10 +24,11 @@
             <ImageView
                 android:id="@+id/backdrop_iv"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/wallpaper_height"
+                android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/wallpaper"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
+                android:maxHeight="@dimen/image_max_height"
                 android:transitionName="@string/shared_element_transition_wallpaper"
                 app:layout_collapseMode="pin"/>
 

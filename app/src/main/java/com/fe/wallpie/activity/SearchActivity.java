@@ -3,6 +3,8 @@ package com.fe.wallpie.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -48,6 +50,7 @@ public class SearchActivity extends BaseActivity {
     private SearchAdapter searchAdapter;
     EndlessRecyclerViewScrollListener mEndlessRecyclerViewScrollListener;
     int page;
+    Parcelable layoutState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,8 @@ public class SearchActivity extends BaseActivity {
         super.onRestoreInstanceState(savedInstanceState);
         search = savedInstanceState.getString(BUDNLE_SEARCH);
         mToolbar.setTitle(search);
-        mRecyclerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(BUNDLE_RECYLER_VIEW));
+        layoutState = savedInstanceState.getParcelable(BUNDLE_RECYLER_VIEW);
+
     }
 
     @Override
@@ -83,6 +87,7 @@ public class SearchActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         outState.putString(BUDNLE_SEARCH, search);
         outState.putParcelable(BUNDLE_RECYLER_VIEW, mRecyclerView.getLayoutManager().onSaveInstanceState());
+
     }
 
     @NonNull
@@ -122,6 +127,9 @@ public class SearchActivity extends BaseActivity {
                 .subscribe(searchResponse -> {
                     populatePhotos(searchResponse.getResults());
                 }, this::handleError);
+        if (searchAdapter != null) {
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(layoutState);
+        }
     }
 
 
@@ -130,6 +138,9 @@ public class SearchActivity extends BaseActivity {
         mRecyclerView.setVisibility(View.VISIBLE);
         searchAdapter = new SearchAdapter(this, searchResponses, mOnItemClickListener);
         mRecyclerView.setAdapter(searchAdapter);
+        if (layoutState != null) {
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(layoutState);
+        }
     }
 
     public static Intent createIntent(Context context, String searchKeyword) {
@@ -194,6 +205,7 @@ public class SearchActivity extends BaseActivity {
         if (mDisposableFollowing != null && !mDisposableFollowing.isDisposed()) {
             mDisposableFollowing.dispose();
         }
+        layoutState = mRecyclerView.getLayoutManager().onSaveInstanceState();
     }
 
     public void handleError(Throwable throwable) {

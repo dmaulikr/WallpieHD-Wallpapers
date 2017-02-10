@@ -50,7 +50,8 @@
             android:layout_below="@id/photograpger_info"
             android:adjustViewBounds="true"
             android:contentDescription="@string/wallpaper"
-            android:scaleType="fitXY"
+            android:background="@color/activityBackgroundColor"
+            android:scaleType="centerCrop"
             android:transitionName="@string/shared_element_transition_wallpaper"
             tools:targetApi="lollipop"/>
 

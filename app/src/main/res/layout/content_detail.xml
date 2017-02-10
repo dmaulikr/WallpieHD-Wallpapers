@@ -174,7 +174,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/ads"
             ads:adSize="360x132"
-            ads:adUnitId="@string/test_add"
+            ads:adUnitId="@string/native_add_id"
             >
         </com.google.android.gms.ads.NativeExpressAdView>
     </LinearLayout>

@@ -3,7 +3,9 @@ package com.fe.wallpie.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -36,6 +38,7 @@ public class PhotosActivity extends BaseActivity {
     private static final int MAX_ITEMS_PER_REQUEST = 30;
     private static final String COLLECTION_NAME = "collection_name";
     private static final String BUNDLE_RECYLER_VIEW = "bundle_rv";
+    private static final String SCROLL_POSITION = "scroll_position";
     CollectionImagesAdapter mCollectionImagesAdapter;
 
 
@@ -49,6 +52,8 @@ public class PhotosActivity extends BaseActivity {
     @BindView(R.id.progress_bar_loading)
     ProgressBar mProgressBar;
     private String mCOllectionName;
+    Parcelable layoutState;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,7 @@ public class PhotosActivity extends BaseActivity {
         mWallpaperProvider = new WallpaperProvider(Wallpie.getDesiredMinimumHeight(), Wallpie.getDesiredMinimumWidth());
         mCollectionImagesRecylerView.setLayoutManager(new LinearLayoutManager(this));
         page = 1;
+
     }
 
     @Override
@@ -86,7 +92,7 @@ public class PhotosActivity extends BaseActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mCollectionImagesRecylerView.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(BUNDLE_RECYLER_VIEW));
+        layoutState = savedInstanceState.getParcelable(BUNDLE_RECYLER_VIEW);
     }
 
 
@@ -102,7 +108,8 @@ public class PhotosActivity extends BaseActivity {
         mCollectionImagesAdapter = new CollectionImagesAdapter(this, collectionImages, new CollectionImagesAdapter.OnItemClickListner() {
             @Override
             public void onItemClick(CollectionImages collectionImages, CollectionImagesAdapter.ColectionImagesViewholder colectionImagesViewholder) {
-                startActivity(DetailActivity.createIntent(PhotosActivity.this, collectionToWallpaperResponse(collectionImages)));
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(PhotosActivity.this, colectionImagesViewholder.mWallpaper, getString(R.string.shared_element_transition_wallpaper));
+                startActivity(DetailActivity.createIntent(PhotosActivity.this, collectionToWallpaperResponse(collectionImages)), optionsCompat.toBundle());
             }
         });
 
@@ -121,6 +128,9 @@ public class PhotosActivity extends BaseActivity {
                                 });
             }
         });
+        if (layoutState != null) {
+            mCollectionImagesRecylerView.getLayoutManager().onRestoreInstanceState(layoutState);
+        }
 
     }
 
@@ -159,6 +169,8 @@ public class PhotosActivity extends BaseActivity {
         if (mDisposableCollectionImagesFollowing != null && !mDisposableCollectionImagesFollowing.isDisposed()) {
             mDisposableCollectionImagesFollowing.dispose();
         }
+        layoutState = mCollectionImagesRecylerView.getLayoutManager().onSaveInstanceState();
+
     }
 
     public void handleError(Throwable throwable) {
@@ -170,6 +182,15 @@ public class PhotosActivity extends BaseActivity {
 
             snackBarResult(String.valueOf(throwable.getLocalizedMessage()));
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mCollectionImagesAdapter != null) {
+            mCollectionImagesRecylerView.getLayoutManager().onRestoreInstanceState(layoutState);
+        }
+
     }
 
     private void snackBarResult(String msg) {

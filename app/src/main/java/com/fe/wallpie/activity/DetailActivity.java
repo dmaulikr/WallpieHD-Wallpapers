@@ -40,6 +40,7 @@ import com.fe.wallpie.utility.PermissionManager;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.NativeExpressAdView;
+import com.google.android.gms.ads.VideoOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -188,14 +189,41 @@ public class DetailActivity extends BaseActivity {
         mMoreFromPhotgrapher.setText(String.format(getString(R.string.more_from), mWallpapersResponse.getUser().getFirstName()));
         setLikeButton();
         mExpressAdView.loadAd(new AdRequest.Builder()
+                .addTestDevice("395781A0455C88286AAF7FE65ABF13A1")
                 .build());
         mExpressAdView.setAdListener(new AdListener() {
             @Override
             public void onAdFailedToLoad(int i) {
                 super.onAdFailedToLoad(i);
                 mAdsLayout.setVisibility(View.GONE);
+                Log.d(DetailActivity.class.getName(), "onAdFailedToLoad: code "+i);
+            }
+
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                Log.d(DetailActivity.class.getName(), "onAdClosed");
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+                Log.d(DetailActivity.class.getName(), "onAdLeftApplication");
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+                Log.d(DetailActivity.class.getName(), "onAdOpened");
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                Log.d(DetailActivity.class.getName(), "onAdLoaded");
             }
         });
+        mExpressAdView.setVideoOptions(new VideoOptions.Builder().setStartMuted(true).build());
         mButtonDownload.setOnClickListener(v -> {
             if (AndroidUtils.isNetworkAvailable()) {
                 downloadOnly();
