@@ -3,4 +3,4 @@ A wallpaper collection app where you get daily new wallpaper which you can favor
 
 
 
-![ScreenShot](https://doc-14-8k-docs.googleusercontent.com/docs/securesc/o0hesko7pk2c3sdd59mbmr38oprkm924/lgcdil49d9numgig2tq21eaa8khri10a/1487016000000/03539079820008355938/03539079820008355938/0B7oSqvR8oR6Yb3NXS1MtTkQxVVE?e=download)
+![ScreenShot](https://cloud.githubusercontent.com/assets/19170832/22901590/3fadb9a8-f258-11e6-8e22-c69b33f94d8d.png)
