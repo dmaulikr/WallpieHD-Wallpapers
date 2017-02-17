@@ -187,9 +187,7 @@ public class PhotosActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mCollectionImagesAdapter != null) {
-            mCollectionImagesRecylerView.getLayoutManager().onRestoreInstanceState(layoutState);
-        }
+
 
     }
 

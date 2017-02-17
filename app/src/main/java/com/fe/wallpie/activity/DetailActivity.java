@@ -189,7 +189,6 @@ public class DetailActivity extends BaseActivity {
         mMoreFromPhotgrapher.setText(String.format(getString(R.string.more_from), mWallpapersResponse.getUser().getFirstName()));
         setLikeButton();
         mExpressAdView.loadAd(new AdRequest.Builder()
-                .addTestDevice("395781A0455C88286AAF7FE65ABF13A1")
                 .build());
         mExpressAdView.setAdListener(new AdListener() {
             @Override
